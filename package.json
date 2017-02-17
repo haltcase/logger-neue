@@ -1,6 +1,6 @@
 {
   "name": "logger-neue",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "description": "Doing for Node logging what Neue did for Helvetica.",
   "main": "dist/index.js",
   "scripts": {
