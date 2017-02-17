@@ -1,6 +1,6 @@
 # logger-neue
 
-_logger-neue_ is an work-in-progress experiment trying to refine
+_logger-neue_ is a work-in-progress experiment trying to refine
 the concept of logging in Node. It aims to be easier to configure
 with features such as custom log levels compared to similar projects
 like [`winston`](https://github.com/winstonjs/winston).
