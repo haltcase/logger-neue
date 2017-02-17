@@ -10,7 +10,7 @@ class LoggerNeue extends EventEmitter {
   constructor (options = defaults.OPTIONS) {
     super()
 
-    if (options && !helpers.isObject(options)) {
+    if (!helpers.isObject(options)) {
       throw new TypeError('options must be an object')
     }
 

@@ -41,6 +41,11 @@ export const FILE = {
   template: '{{"level":{level!json},"input":{args!json},"timestamp":{timestamp!json}}}'
 }
 
+export const OPTIONS = {
+  file: FILE,
+  console: CONSOLE
+}
+
 export function normalizeLevels (levels) {
   if (levels == null) return LEVELS
 
