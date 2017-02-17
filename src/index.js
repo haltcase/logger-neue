@@ -7,7 +7,7 @@ import * as defaults from './defaults'
 import * as formatter from './formatter'
 
 class LoggerNeue extends EventEmitter {
-  constructor (options = defaults) {
+  constructor (options = defaults.OPTIONS) {
     super()
 
     if (options && !helpers.isObject(options)) {
