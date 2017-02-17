@@ -13,16 +13,6 @@ export let format = strat.create({
   json: str => JSON.stringify(str)
 })
 
-export let logFormat = {
-  standard: format('{level}: {input}'),
-  get template () {
-    return this.custom || this.standard
-  },
-  set template (value) {
-    this.custom = format(value)
-  }
-}
-
 export function getChalkTemplate (colors) {
   return colors.reduce((acc, color) => {
     return typeof acc[color] === 'function' ? acc[color] : acc.white
