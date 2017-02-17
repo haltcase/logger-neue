@@ -69,7 +69,7 @@ class LoggerNeue extends EventEmitter {
     } else {
       let res = this.getLevelByNumber(level)
       if (!res) {
-        throw new Error(`could not find a log name for level ${level}`)
+        throw new Error(`could not find method name for level ${level}`)
       }
 
       action = res
