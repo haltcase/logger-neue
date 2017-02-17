@@ -101,7 +101,7 @@ class LoggerNeue extends EventEmitter {
   }
 
   getNumberOfLevel (name) {
-    return (this.levels[name] || {}).level
+    return Number((this.levels[name] || {}).level) || 0
   }
 
   get levelNames () {
@@ -114,7 +114,7 @@ class LoggerNeue extends EventEmitter {
 
   set consoleLevel (level) {
     if (typeof level === 'string') {
-      this.console.level = Number(this.getNumberOfLevel(level)) || 0
+      this.console.level = this.getNumberOfLevel(level)
     } else {
       this.console.level = Number(level) || 0
     }
@@ -126,7 +126,7 @@ class LoggerNeue extends EventEmitter {
 
   set fileLevel (level) {
     if (typeof level === 'string') {
-      this.file.level = Number(this.getNumberOfLevel(level)) || 0
+      this.file.level = this.getNumberOfLevel(level)
     } else {
       this.file.level = Number(level) || 0
     }
