@@ -1,6 +1,6 @@
 {
   "name": "logger-neue",
-  "version": "0.6.0",
+  "version": "1.0.0-alpha.1",
   "description": "Doing for Node logging what Neue did for Helvetica.",
   "author": {
     "name": "Bo Lingen",
