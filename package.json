@@ -2,11 +2,21 @@
   "name": "logger-neue",
   "version": "0.6.0",
   "description": "Doing for Node logging what Neue did for Helvetica.",
+  "author": {
+    "name": "Bo Lingen",
+    "email": "thecitycide@gmail.com",
+    "url": "github.com/citycide"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/citycide/levers.git"
+  },
+  "homepage": "https://github.com/citycide/levers",
+  "bugs": "https://github.com/citycide/levers/issues",
   "main": "dist/index.js",
-  "scripts": {
-    "pretest": "babel src -d dist",
-    "watch": "babel src -d dist -w",
-    "test": "ava"
+  "engines": {
+    "node": ">=4"
   },
   "keywords": [
     "logging",
@@ -17,11 +27,14 @@
     "chalk",
     "formatted"
   ],
-  "author": "Bo Lingen <thecitycide@gmail.com>",
-  "license": "MIT",
   "files": [
     "dist"
   ],
+  "scripts": {
+    "pretest": "babel src -d dist",
+    "watch": "babel src -d dist -w",
+    "test": "ava"
+  },
   "dependencies": {
     "assign-deep": "^0.4.5",
     "chalk": "^1.1.3",
