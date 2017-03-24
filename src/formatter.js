@@ -39,5 +39,15 @@ function formatInput (fullColor, value) {
     return util.inspect(value, { colors: fullColor })
   }
 
-  return fullColor ? util.inspect(value, { colors: true }) : value
+  if (!fullColor) return value
+
+  if (value === null) return chalk.magenta('null')
+
+  switch (typeof value) {
+    case 'undefined': return chalk.gray('undefined')
+    case 'boolean': return chalk.blue(value)
+    case 'number': return chalk.yellow(value)
+    case 'string': return chalk.green(value)
+    default: return util.inspect(value, { colors: true })
+  }
 }
