@@ -1,0 +1,22 @@
+import fs from 'fs-promise'
+import path from 'path'
+import os from 'os'
+
+import { isDirectory } from '../helpers'
+
+export default (level, formatter, args) ->
+  logPath = path.resolve(this.file.dir, this.file.path)
+
+  if isDirectory(logPath):
+    throw new Error('cannot set log path to directory')
+
+  fs.ensureDir(path.dirname(logPath)).then(() =>
+    context = formatter.createContext(
+      { level, chalker: val => val }, args
+    )
+    output = formatter.format(this.file.template, context)
+
+    stream = fs.createWriteStream(logPath, { flags: 'a' })
+    stream.write(output + os.EOL)
+    stream.on('error', e => this.emit('error', e))
+  )

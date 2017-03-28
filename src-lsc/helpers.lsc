@@ -1,0 +1,17 @@
+{ statSync } = require('fs')
+
+export isObject (value) ->
+  value == Object(value) and !Array.isArray(value)
+
+export hasProps (object, keys) ->
+  keys.every(key => ({}.hasOwnProperty.call(object, key)))
+
+export isDirectory (path) ->
+  try {
+    return statSync(path).isDirectory()
+  } catch (err) {
+    if err.code != 'ENOENT' and err.code != 'ENOTDIR':
+      throw err
+  }
+
+  false

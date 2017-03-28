@@ -1,0 +1,108 @@
+import assign from 'assign-deep'
+import EventEmitter from 'events'
+
+import transports from './transports'
+import * as helpers from './helpers'
+import * as defaults from './defaults'
+import * as formatter from './formatter'
+
+class LoggerNeue extends EventEmitter:
+  constructor (options = defaults.OPTIONS) ->
+    super()
+
+    if !helpers.isObject(options):
+      throw new TypeError('options must be an object')
+
+    this.file = options?.file?.path
+      ? assign({}, defaults.FILE, options.file)
+      : false
+
+    this.console = assign({}, defaults.CONSOLE, options.console)
+    this.levels = defaults.normalizeLevels(options.levels)
+
+    if this.file: this.fileLevel = this.file.level
+    this.consoleLevel = this.console.level
+
+    Object.keys(this.levels).map(name =>
+      { level, colors } = this.levels[name]
+      this.addLevel(name, level, colors)
+    )
+
+  static create (options) ->
+    new LoggerNeue(options)
+
+  addLevel (name, level, colors) ->
+    this.levels[name] = { level, colors }
+    if this[name]: return
+
+    this[name] = (...args) =>
+      this.log(name, ...args)
+
+    this[name].format = (template, ...args) =>
+      if args.length == 1:
+        obj = args[0]
+        if obj == Object(obj):
+          now args = obj
+
+      this.log(name, formatter.format(template, args))
+
+  log (level, ...args) ->
+    let action, number, logged
+
+    if typeof level == 'string':
+      if !(level in this.levels):
+        throw new Error(`no such log level is defined ('${level}')`)
+
+      now action = level
+      now number = this.levels[level].level
+    else:
+      res = this.getLevelByNumber(level)
+      if !res:
+        throw new Error(`could not find method name for level ${level}`)
+
+      now action = res
+      now number = level
+
+    if this.consoleLevel >= number:
+      transports.console.call(this, action, formatter, args)
+      now logged = true
+
+    if this.file and this.fileLevel >= number:
+      transports.file.call(this, action, formatter, args)
+      now logged = true
+
+    if logged:
+      props = { name: action, level: number, args }
+      this.emit('log', props)
+      this.emit(`log:${action}`, props)
+
+  getLevelByNumber (n) ->
+    Object.keys(this.levels).reduce((_, name) =>
+      if this.levels?[name]?.level == n: return name
+    )
+
+  getNumberOfLevel (name) ->
+    Number(this.levels?[name]?.level) or 0
+
+  levelNames () -get>
+    Object.keys(this.levels)
+
+  consoleLevel () -get>
+    this.console.level
+
+  consoleLevel (level) -set>
+    if typeof level == 'string':
+      this.console.level = this.getNumberOfLevel(level)
+    else:
+      this.console.level = Number(level) or 0
+
+  fileLevel () -get>
+    this.file.level
+
+  fileLevel (level) -set>
+    if typeof level == 'string':
+      this.file.level = this.getNumberOfLevel(level)
+    else:
+      this.file.level = Number(level) or 0
+
+export default LoggerNeue
