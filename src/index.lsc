@@ -23,7 +23,7 @@ class LoggerNeue extends EventEmitter:
     if this.file: this.fileLevel = this.file.level
     this.consoleLevel = this.console.level
 
-    Object.keys(this.levels).map(name =>
+    Object.keys(this.levels).forEach(name =>
       { level, colors } = this.levels[name]
       this.addLevel(name, level, colors)
     )
@@ -77,9 +77,8 @@ class LoggerNeue extends EventEmitter:
       this.emit(`log:${action}`, props)
 
   getLevelByNumber (n) ->
-    Object.keys(this.levels).reduce((_, name) =>
-      if this.levels?[name]?.level == n: return name
-    )
+    for name in this.levels:
+      if this.levels[name]?.level == n: return name
 
   getNumberOfLevel (name) ->
     Number(this.levels?[name]?.level) or 0

@@ -1,6 +1,6 @@
 import * as helpers from './helpers'
 
-export const LEVELS = {
+export LEVELS = {
   error: {
     level: 0,
     colors: ['red', 'bgBlack']
@@ -27,56 +27,50 @@ export const LEVELS = {
   }
 }
 
-export const CONSOLE = {
+export CONSOLE = {
   level: 0,
   levels: LEVELS,
   fullColor: false,
   template: '{level}: {input}'
 }
 
-export const FILE = {
+export FILE = {
   dir: process.cwd(),
   level: 0,
   levels: LEVELS,
   template: '{{"level":{level!json},"input":{args!json},"timestamp":{timestamp!json}}}'
 }
 
-export const OPTIONS = {
+export OPTIONS = {
   file: FILE,
   console: CONSOLE
 }
 
-export function normalizeLevels (levels) {
-  if (levels == null) return LEVELS
+export normalizeLevels (levels) ->
+  if helpers.isNil(levels): return LEVELS
 
-  if (!helpers.isObject(levels)) {
+  if !helpers.isObject(levels):
     throw new TypeError(
       `expected 'options.levels' to be an Object`
     )
-  }
 
-  return Object.keys(levels).reduce((acc, cur) => {
-    let element = levels[cur]
-    if (Array.isArray(element)) {
-      acc[cur] = {
-        level: Number(element[0]) || 0,
-        colors: Array.isArray(element[1]) ? element[1] : [element[1]]
-      }
+  Object.keys(levels).reduce((acc, cur) => {
+    element = levels[cur]
+    let level, colors
 
-      return acc
-    } else if (helpers.isObject(element)) {
-      if (helpers.hasProps(element, ['level', 'colors'])) {
-        acc[cur] = {
-          level: Number(element.level) || 0,
-          colors: Array.isArray(element.colors) ? element.colors : [element.colors]
-        }
-
-        return acc
-      }
-    } else {
+    if Array.isArray(element):
+      now [level, colors] = element
+    else if helpers.isObject(element):
+      now { level, colors } = element
+    else:
       throw new TypeError(
         `invalid level definition for 'options.levels.${cur}'`
       )
+
+    acc[cur] = {
+      level: Number(level) or 0,
+      colors: Array.isArray(colors) ? colors : [colors]
     }
+
+    acc
   }, {})
-}
