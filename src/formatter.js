@@ -1,6 +1,7 @@
 import strat from 'strat'
 import chalk from 'chalk'
 import util from 'util'
+import stringify from 'fast-safe-stringify'
 
 import * as helpers from './helpers'
 
@@ -10,7 +11,7 @@ export let format = strat.create({
   paren: str => `(${str})`,
   brace: str => `[${str}]`,
   curly: str => `{${str}}`,
-  json: str => JSON.stringify(str)
+  json: str => stringify(str)
 })
 
 export function getChalkTemplate (colors) {
