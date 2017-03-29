@@ -51,14 +51,18 @@ class LoggerNeue extends EventEmitter:
 
     if typeof level == 'string':
       if !(level in this.levels):
-        throw new Error(`no such log level is defined ('${level}')`)
+        throw new Error(
+          `no such log level is defined ('${level}')`
+        )
 
       now action = level
       now number = this.levels[level].level
     else:
       res = this.getLevelByNumber(level)
       if !res:
-        throw new Error(`could not find method name for level ${level}`)
+        throw new Error(
+          `could not find method name for level ${level}`
+        )
 
       now action = res
       now number = level

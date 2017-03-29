@@ -38,7 +38,10 @@ export FILE = {
   dir: process.cwd(),
   level: 0,
   levels: LEVELS,
-  template: '{{"level":{level!json},"input":{args!json},"timestamp":{timestamp!json}}}'
+  template:
+    '{{"level":{level!json},' +
+    '"input":{args!json},' +
+    '"timestamp":{timestamp!json}}}'
 }
 
 export OPTIONS = {
