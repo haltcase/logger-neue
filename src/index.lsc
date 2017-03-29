@@ -81,8 +81,8 @@ class LoggerNeue extends EventEmitter:
       this.emit(`log:${action}`, props)
 
   getLevelByNumber (n) ->
-    for name in this.levels:
-      if this.levels[name]?.level == n: return name
+    for key name, val v in this.levels:
+      if v.level == n: return name
 
   getNumberOfLevel (name) ->
     Number(this.levels?[name]?.level) or 0
