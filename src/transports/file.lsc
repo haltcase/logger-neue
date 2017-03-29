@@ -11,9 +11,8 @@ export default (level, formatter, args) ->
     throw new Error('cannot set log path to directory')
 
   fs.ensureDir(path.dirname(logPath)).then(() =>
-    context = formatter.createContext(
-      { level, chalker: val => val }, args
-    )
+    config = { level, chalker: val => val }
+    context = formatter.createContext(config, args)
     output = formatter.format(this.file.template, context)
 
     stream = fs.createWriteStream(logPath, { flags: 'a' })
