@@ -1,0 +1,24 @@
+import os from 'os'
+
+export default (level, formatter, args) ->
+  { colors, isError } = this.levels[level]
+  
+  chalker = formatter.getChalkTemplate(colors)
+  config = { level, chalker, fullColor: this.console.fullColor }
+  context = formatter.createContext(config, args)
+  output = formatter.format(this.console.template, context)
+
+  if isError:
+    if typeof window != 'undefined':
+      // basic browser support for Electron
+      target = console?.error or => {}
+      target(`${level}: `, ...args)
+    else:
+      process.stderr.write(output + os.EOL)
+  else:
+    if typeof window != 'undefined':
+      // basic browser support for Electron
+      target = console?[level] or console.log
+      target(`${level}: `, ...args)
+    else:
+      process.stdout.write(output + os.EOL)

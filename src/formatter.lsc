@@ -1,0 +1,52 @@
+import util from 'util'
+import strat from 'strat'
+import chalk from 'chalk'
+import stringify from 'fast-safe-stringify'
+
+import * as helpers from './helpers'
+
+export format = strat.create({
+  upper: str => String(str).toUpperCase(),
+  lower: str => String(str).toLowerCase(),
+  paren: str => `(${str})`,
+  brace: str => `[${str}]`,
+  curly: str => `{${str}}`,
+  json: str => stringify(str)
+})
+
+export getChalkTemplate (colors) ->
+  colors.reduce((acc, color, i) => {
+    if typeof acc[color] == 'function':
+      return acc[color]
+    else:
+      return i == 0 ? acc.white : acc
+  }, chalk)
+
+export createContext (state, args) ->
+  { chalker, level, fullColor } = state
+
+  return {
+    args,
+    level () => chalker(level),
+    timestamp () => new Date().toISOString(),
+    input () =>
+      args.reduce((acc, cur, i) => {
+        acc + (i ? ' ' : '') + formatInput(fullColor, cur)
+      }, '')
+  }
+
+formatInput (fullColor, value) ->
+  if helpers.isObject(value) or Array.isArray(value):
+    return util.inspect(value, { colors: fullColor })
+
+  if !fullColor: return value
+
+  if value == null: return chalk.magenta('null')
+
+  switch typeof value {
+    case 'undefined': return chalk.gray('undefined')
+    case 'boolean': return chalk.blue(value)
+    case 'number': return chalk.yellow(value)
+    case 'string': return chalk.green(value)
+    default: return util.inspect(value, { colors: true })
+  }

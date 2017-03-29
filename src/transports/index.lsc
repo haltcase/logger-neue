@@ -1,0 +1,7 @@
+import file from './file'
+import console from './console'
+
+export default {
+  file,
+  console
+}

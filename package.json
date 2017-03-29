@@ -31,8 +31,8 @@
     "dist"
   ],
   "scripts": {
-    "pretest": "babel src -d dist",
-    "watch": "babel src -d dist -w",
+    "pretest": "babel src -d dist -x .lsc",
+    "watch": "npm run pretest -- -w",
     "test": "ava"
   },
   "dependencies": {
@@ -43,14 +43,18 @@
     "strat": "^1.0.0-alpha.1"
   },
   "devDependencies": {
-    "ava": "^0.17.0",
-    "babel-cli": "^6.18.0",
+    "ava": "^0.18.2",
+    "babel-cli": "^6.24.0",
     "babel-plugin-add-module-exports": "^0.2.1",
-    "babel-plugin-transform-es2015-modules-commonjs": "^6.18.0",
-    "eslint": "^3.11.0",
-    "eslint-config-standard": "^6.2.1",
-    "eslint-plugin-promise": "^3.4.0",
-    "eslint-plugin-standard": "^2.0.1"
+    "babel-plugin-lightscript": "^0.4.2",
+    "babel-plugin-transform-es2015-destructuring": "^6.23.0",
+    "babel-plugin-transform-es2015-modules-commonjs": "^6.24.0",
+    "babel-plugin-transform-es2015-parameters": "^6.23.0",
+    "babel-plugin-transform-es2015-spread": "^6.22.0",
+    "eslint": "^3.18.0",
+    "eslint-config-standard": "^7.1.0",
+    "eslint-plugin-promise": "^3.5.0",
+    "eslint-plugin-standard": "^2.1.1"
   },
   "ava": {
     "files": [
@@ -62,7 +66,11 @@
   "babel": {
     "presets": [],
     "plugins": [
+      "lightscript",
       "add-module-exports",
+      "transform-es2015-spread",
+      "transform-es2015-parameters",
+      "transform-es2015-destructuring",
       "transform-es2015-modules-commonjs"
     ]
   }
