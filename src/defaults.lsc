@@ -67,7 +67,7 @@ export normalizeLevels (levels) ->
       now { level, colors } = element
     else:
       throw new TypeError(
-        `invalid level definition for 'options.levels.${cur}'`
+        `invalid level definition for 'options.levels.${name}'`
       )
 
     acc[name] = {
