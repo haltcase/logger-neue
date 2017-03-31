@@ -1,5 +1,7 @@
 import * as helpers from './helpers'
 
+// test comment
+
 export LEVELS = {
   error: {
     level: 0,
