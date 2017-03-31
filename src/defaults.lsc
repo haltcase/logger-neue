@@ -57,8 +57,8 @@ export normalizeLevels (levels) ->
       `expected 'options.levels' to be an Object`
     )
 
-  Object.keys(levels).reduce((acc, cur) => {
-    element = levels[cur]
+  Object.keys(levels).reduce((acc, name) => {
+    element = levels[name]
     let level, colors
 
     if Array.isArray(element):
@@ -70,7 +70,7 @@ export normalizeLevels (levels) ->
         `invalid level definition for 'options.levels.${cur}'`
       )
 
-    acc[cur] = {
+    acc[name] = {
       level: Number(level) or 0,
       colors: Array.isArray(colors) ? colors : [colors]
     }
