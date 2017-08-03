@@ -31,10 +31,10 @@
     "dist"
   ],
   "scripts": {
-    "pretest": "babel src -d dist -x .lsc",
-    "watch": "npm run pretest -- -w",
-    "test": "ava",
-    "lint": "eslint src"
+    "build": "babel src -d dist -x .lsc",
+    "watch": "npm run build -- -w",
+    "pretest": "npm run build",
+    "test": "ava"
   },
   "dependencies": {
     "assign-deep": "^0.4.5",
@@ -51,12 +51,7 @@
     "babel-plugin-transform-es2015-destructuring": "^6.23.0",
     "babel-plugin-transform-es2015-modules-commonjs": "^6.24.0",
     "babel-plugin-transform-es2015-parameters": "^6.23.0",
-    "babel-plugin-transform-es2015-spread": "^6.22.0",
-    "eslint": "^3.18.0",
-    "eslint-config-standard": "^7.1.0",
-    "eslint-plugin-promise": "^3.5.0",
-    "eslint-plugin-standard": "^2.1.1",
-    "lightscript-eslint": "^0.4.1"
+    "babel-plugin-transform-es2015-spread": "^6.22.0"
   },
   "ava": {
     "files": [
