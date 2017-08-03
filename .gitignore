@@ -1,4 +1,10 @@
+# IDE configurations
+.c9
 .idea
 .vscode
-node_modules
+
+# built files
 dist
+logger-neue-*.tgz
+
+node_modules
