@@ -1,13 +1,13 @@
 import os from 'os'
 import path from 'path'
-import fs from 'fs-promise'
+import fs from 'fs-extra'
 
 import { isDirectory } from '../helpers'
 
 export default (level, formatter, args) ->
   logPath = path.resolve(this.file.dir, this.file.path)
 
-  if isDirectory(logPath):
+  if logPath~isDirectory():
     throw new Error('cannot set log path to directory')
 
   fs.ensureDir(path.dirname(logPath)).then(() =>

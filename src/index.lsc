@@ -1,4 +1,4 @@
-import assign from 'assign-deep'
+import merge from 'merge-options'
 import EventEmitter from 'events'
 
 import transports from './transports'
@@ -14,10 +14,10 @@ class LoggerNeue extends EventEmitter:
       throw new TypeError('options must be an object')
 
     this.file = options?.file?.path
-      ? assign({}, defaults.FILE, options.file)
+      ? merge(defaults.FILE, options.file)
       : false
 
-    this.console = assign({}, defaults.CONSOLE, options.console)
+    this.console = merge(defaults.CONSOLE, options.console)
     this.levels = defaults.normalizeLevels(options.levels)
 
     if this.file: this.fileLevel = this.file.level

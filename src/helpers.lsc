@@ -1,4 +1,4 @@
-{ statSync } = require('fs')
+import { statSync } from 'fs-extra'
 
 export isNil (value) ->
   value == null or value == undefined
