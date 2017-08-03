@@ -1,79 +1,78 @@
 import * as helpers from './helpers'
 
-export LEVELS = {
+export LEVELS = Object.seal({
   error: {
-    level: 0,
+    level: 0
     colors: ['red', 'bgBlack']
-  },
+    isError: true
+  }
   warn: {
-    level: 1,
+    level: 1
     colors: ['black', 'bgYellow']
-  },
+  }
   info: {
-    level: 2,
+    level: 2
     colors: ['green']
-  },
+  }
   verbose: {
-    level: 3,
+    level: 3
     colors: ['blue', 'bgBlack']
-  },
+  }
   debug: {
-    level: 4,
+    level: 4
     colors: ['cyan']
-  },
+  }
   silly: {
-    level: 5,
+    level: 5
     colors: ['inverse']
   }
-}
+})
 
-export CONSOLE = {
-  level: 0,
-  levels: LEVELS,
-  fullColor: false,
+export CONSOLE = Object.seal({
+  level: 2
+  levels: LEVELS
+  fullColor: false
   template: '{level}: {input}'
-}
+})
 
-export FILE = {
-  dir: process.cwd(),
-  level: 0,
-  levels: LEVELS,
+export FILE = Object.seal({
+  dir: process.cwd()
+  level: 0
+  levels: LEVELS
   template:
     '{{"level":{level!json},' +
     '"input":{args!json},' +
     '"timestamp":{timestamp!json}}}'
-}
+})
 
-export OPTIONS = {
-  file: FILE,
+export OPTIONS = Object.seal({
+  file: FILE
   console: CONSOLE
-}
+})
+
+export normalizeDefinition (definition) ->
+  let level, colors, isError
+  if Array.isArray(definition):
+    now [level, colors, isError] = definition
+  else if helpers.isObject(definition):
+    now { level, colors, isError } = definition
+  else:
+    throw new TypeError(`invalid level definition`)
+
+  {
+    level: Number(level) or 0
+    colors: Array.isArray(colors) ? colors : [colors]
+    isError: Boolean(isError)
+  }
 
 export normalizeLevels (levels) ->
-  if helpers.isNil(levels): return LEVELS
+  if helpers.isNil(levels): return Object.assign({}, LEVELS)
 
   if !helpers.isObject(levels):
     throw new TypeError(
       `expected 'options.levels' to be an Object`
     )
 
-  Object.keys(levels).reduce((acc, name) => {
-    element = levels[name]
-    let level, colors
-
-    if Array.isArray(element):
-      now [level, colors] = element
-    else if helpers.isObject(element):
-      now { level, colors } = element
-    else:
-      throw new TypeError(
-        `invalid level definition for 'options.levels.${name}'`
-      )
-
-    acc[name] = {
-      level: Number(level) or 0,
-      colors: Array.isArray(colors) ? colors : [colors]
-    }
-
-    acc
-  }, {})
+  { for key name, val element in levels:
+    name, element~normalizeDefinition()
+  }

@@ -13,27 +13,26 @@ class LoggerNeue extends EventEmitter:
     if !helpers.isObject(options):
       throw new TypeError('options must be an object')
 
-    this.file = options?.file?.path
+    this.file = options.file?.path
       ? merge(defaults.FILE, options.file)
       : false
 
     this.console = merge(defaults.CONSOLE, options.console)
     this.levels = defaults.normalizeLevels(options.levels)
 
-    if this.file: this.fileLevel = this.file.level
-    this.consoleLevel = this.console.level
+    this.setConsoleLevel(this.console.level)
 
-    Object.keys(this.levels).forEach(name =>
-      { level, colors } = this.levels[name]
-      this.addLevel(name, level, colors)
-    )
+    for key name, val props in this.levels:
+      this.addLevel(name, props)
 
   static create (options) ->
     new LoggerNeue(options)
 
-  addLevel (name, level, colors) ->
-    this.levels[name] = { level, colors }
+  addLevel (name, properties) ->
     if this[name]: return
+
+    now properties = defaults.normalizeDefinition(properties)
+    this.levels[name] = properties
 
     this[name] = (...args) =>
       this.log(name, ...args)
@@ -67,11 +66,11 @@ class LoggerNeue extends EventEmitter:
       now action = res
       now number = level
 
-    if this.consoleLevel >= number:
+    if this.console.level >= number:
       transports.console.call(this, action, formatter, args)
       now logged = true
 
-    if this.file and this.fileLevel >= number:
+    if this.file and this.file.level >= number:
       transports.file.call(this, action, formatter, args)
       now logged = true
 
@@ -85,24 +84,24 @@ class LoggerNeue extends EventEmitter:
       if v.level == n: return name
 
   getNumberOfLevel (name) ->
-    Number(this.levels?[name]?.level) or 0
+    Number(this.levels[name]?.level) or 0
 
-  levelNames () -get>
+  getLevelNames () ->
     Object.keys(this.levels)
 
-  consoleLevel () -get>
+  getConsoleLevel () ->
     this.console.level
 
-  consoleLevel (level) -set>
+  setConsoleLevel (level) ->
     if typeof level == 'string':
       this.console.level = this.getNumberOfLevel(level)
     else:
       this.console.level = Number(level) or 0
 
-  fileLevel () -get>
+  getFileLevel () ->
     this.file.level
 
-  fileLevel (level) -set>
+  setFileLevel (level) ->
     if typeof level == 'string':
       this.file.level = this.getNumberOfLevel(level)
     else:
