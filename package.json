@@ -56,19 +56,6 @@
   "ava": {
     "files": [
       "tests/**/*.js"
-    ],
-    "verbose": true,
-    "babel": "inherit"
-  },
-  "babel": {
-    "presets": [],
-    "plugins": [
-      "lightscript",
-      "add-module-exports",
-      "transform-es2015-spread",
-      "transform-es2015-parameters",
-      "transform-es2015-destructuring",
-      "transform-es2015-modules-commonjs"
     ]
   }
 }
