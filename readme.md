@@ -5,6 +5,9 @@ It aims to be easier to configure than similar projects like
 [`winston`](https://github.com/winstonjs/winston) for simple
 features like custom log levels and file output.
 
+It also has basic support for Node-ish environments like Electron's
+renderer, where it will write to the developer tools console.
+
 ## installation
 
 ```console
@@ -96,28 +99,39 @@ const log = LoggerNeue.create()
 
   - _optional_ `{Object} options`:
 
-  |  property    | type       | default     | description                       |
-  | ------------ | :--------: | :---------: | --------------------------------- |
-  | `file`       | `Object`   | `{}`        | Configuration for file output.    |
-  | `console`    | `Object`   | _see below_ | Configuration for console output. |
+  | property  | type       | default     | description                       |
+  | --------- | :--------: | :---------: | --------------------------------- |
+  | `file`    | `Object`   | `{}`        | Configuration for file output.    |
+  | `console` | `Object`   | _see below_ | Configuration for console output. |
 
   `options.file`:
 
-  | property | type            | default         | description                         |
-  | -------- | :-------------: | :-------------: | ----------------------------------- |
-  | `dir`    | `string`        | `process.cwd()` | Base directory with which to resolve `path`.  |
-  | `level`  | `string` or `number` | `0` or `error`  | Number or name of the output level. |
-  | `path`   | `string`        | -               | Path to the log file, resolved with `dir` if relative. |
-  | `template` | `string`      | `'{{"level":{level!json},"input":{args!json},"timestamp":{timestamp!json}}}'` | [`strat`][strat] compatible template with which to format the output. See [templates](#templates) for more. |
+  | property   | type            | default         | description                         |
+  | ---------- | :-------------: | :-------------: | ----------------------------------- |
+  | `dir`      | `string`        | `process.cwd()` | Base directory with which to resolve `path`.  |
+  | `level`    | `string` or `number` | `0` or `error`  | Number or name of the output level. |
+  | `path`     | `string`        | -               | Path to the log file, resolved with `dir` if relative. |
+  | `template` | `string`        | `'{{"level":{level!json},"input":{args!json},"timestamp":{timestamp!json}}}'` | [`strat`][strat] compatible template with which to format the output. See [templates](#templates) for more. |
 
+  `options.console`:
 
-  `options.file`:
+  | property    | type            | default         | description                         |
+  | ----------- | :-------------: | :-------------: | ----------------------------------- |
+  | `fullColor` | `boolean`       | `false` | Whether to apply color to all types of values. |
+  | `level`     | `string` or `number` | `0` or `error`  | Number or name of the output level. |
+  | `template`  | `string`        | `'{level}: {input}'` | [`strat`][strat] compatible template with which to format the output. See [templates](#templates) for more. |
 
-  | property | type            | default         | description                         |
-  | -------- | :-------------: | :-------------: | ----------------------------------- |
-  | `fullColor` | `boolean` | `false` | Whether to apply color to all types of values. |
-  | `level`  | `string` or `number` | `0` or `error`  | Number or name of the output level. |
-  | `template` | `string`      | `'{level}: {input}'` | [`strat`][strat] compatible template with which to format the output. See [templates](#templates) for more. |
+  `options.levels`:
+
+  If provided as an object, it should have these properties:
+
+  |  property  | type       | default     | description                       |
+  | ---------- | :--------: | :---------: | --------------------------------- |
+  | `level`    | `number`   | `0`         | Determines when this log method fires. |
+  | `colors`   | `string` or `string[]` | - | [`chalk`][styles] styles for terminal output, either a single string or array of styles. |
+  | `isError`  | `boolean`  | `false`     | If `true`, target `stderr` instead of `stdout`. |
+
+  If provided as an Array, it should take the form of `[level, colors, isError]`
 
 ### addLevel
 
@@ -130,11 +144,15 @@ addLevel(name, properties)
   - `{string} name`
   - `{Object} properties`:
 
+  If provided as an object, it should have these properties:
+
   |  property  | type       | default     | description                       |
   | ---------- | :--------: | :---------: | --------------------------------- |
   | `level`    | `number`   | `0`         | Determines when this log method fires. |
   | `colors`   | `string` or `string[]` | - | [`chalk`][styles] styles for terminal output, either a single string or array of styles. |
   | `isError`  | `boolean`  | `false`     | If `true`, target `stderr` instead of `stdout`. |
+
+  If provided as an Array, it should take the form of `[level, colors, isError]`
 
 ### log
 
@@ -241,6 +259,67 @@ not output.
 
 `{string|number}`: either the name of the level or its logging level number
 
+## defaults
+
+_logger-neue_ attempts to make setup as painless as possible,
+which means it uses sane defaults to allow for minimal or zero configuration.
+
+Without providing a config object, _logger-neue_ uses the following
+defaults:
+
+```js
+options = {
+  // no file output
+  file: false,
+  console: {
+    // will output 'info', 'warn', and 'error'
+    level: 'info',
+    // does not apply color to primitives
+    fullColor: false,
+    template: '{level}: {input}'
+  },
+  levels: {
+    //       [level, colors, isError]
+    error:   [0, ['red', 'bgBlack'], true],
+    warn:    [1, ['black', 'bgYellow'], false],
+    info:    [2, ['green'], false],
+    verbose: [3, ['blue', 'bgBlack'], false],
+    debug:   [4, ['cyan'], false],
+    silly:   [5, ['inverse'], false]
+  }
+}
+```
+
+If `options.file.path` is provided, these defaults are used for
+the rest of the properties in `options.file`:
+
+```js
+options.file = {
+  // used as base directory if `path` is relative
+  dir: process.cwd(),
+  // only outputs 'error'
+  level: 0,
+  template:
+    '{{"level":{level!json},' +
+    '"input":{args!json},' +
+    '"timestamp":{timestamp!json}}}'
+}
+```
+
+This means a console-only config can be as simple as:
+
+```js
+const logger = LoggerNeue.create()
+```
+
+... and adding additional output to a file can be as simple as:
+
+```js
+const logger = LoggerNeue.create({
+  file: { path: './log.txt' }
+})
+```
+
 ## templates
 
 The [`strat`][strat] module is used to format all output strings. The
@@ -296,7 +375,7 @@ log.on('log', event => {
 })
 
 log.on('log:info', event => {
-  // only `log.info()` with trigger this
+  // only `log.info()` will trigger this
   const { name, level, args } = event
 })
 
