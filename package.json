@@ -5,15 +5,15 @@
   "author": {
     "name": "Bo Lingen",
     "email": "lingenbw@gmail.com",
-    "url": "github.com/citycide"
+    "url": "https://github.com/citycide"
   },
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/citycide/levers.git"
+    "url": "git+https://github.com/citycide/logger-neue.git"
   },
-  "homepage": "https://github.com/citycide/levers",
-  "bugs": "https://github.com/citycide/levers/issues",
+  "homepage": "https://github.com/citycide/logger-neue",
+  "bugs": "https://github.com/citycide/logger-neue/issues",
   "main": "dist/index.js",
   "engines": {
     "node": ">=6"
