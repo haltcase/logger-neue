@@ -104,13 +104,15 @@ const log = loggerNeue({
 
 ## api
 
-### create
+### loggerNeue (`constructor`)
 
 ```js
-create(options)
+loggerNeue(options)
 ```
 
-There are actually two ways to create a new instance &mdash; the following are roughly equivalent:
+There are actually two ways to create a new instance &mdash; you can use the default
+export (which is a function) or the named export `LoggerNeue`. This means the following
+are (roughly) equivalent:
 
 ```js
 import loggerNeue, { LoggerNeue } from 'logger-neue'
@@ -118,8 +120,9 @@ const logger1 = new LoggerNeue()
 const logger2 = loggerNeue()
 ```
 
-The difference is that `LoggerNeue` is the raw class, and the default export is a wrapper
-function that provides helpful type information based on your provided level definitions.
+The difference is that `LoggerNeue` is the raw class, and the default export is a
+wrapper function that [provides helpful type information][impl] based on your provided
+level definitions.
 
 > **Arguments**
 
@@ -432,3 +435,4 @@ MIT © [Bo Lingen / citycide](https://github.com/citycide)
 [chalk]: https://github.com/chalk/chalk
 [strat]: https://github.com/citycide/strat
 [styles]: https://github.com/chalk/chalk#styles
+[impl]: https://github.com/citycide/logger-neue/blob/fd4b2ba33303aedb46745b520f3873ae5be4a809/src/index.ts#L143-L145
