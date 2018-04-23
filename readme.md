@@ -1,26 +1,50 @@
-# logger-neue &middot; [![Version](https://img.shields.io/npm/v/logger-neue.svg?style=flat-square&maxAge=3600)](https://www.npmjs.com/package/logger-neue) [![License](https://img.shields.io/npm/l/logger-neue.svg?style=flat-square&maxAge=3600)](https://www.npmjs.com/package/logger-neue) [![Travis CI](https://img.shields.io/travis/citycide/logger-neue.svg?style=flat-square&maxAge=3600)](https://travis-ci.org/citycide/logger-neue) [![LightScript](https://img.shields.io/badge/written%20in-lightscript-00a99d.svg?style=flat-square)](http://www.lightscript.org)
+# logger-neue &middot; [![Version](https://img.shields.io/npm/v/logger-neue.svg?style=flat-square&maxAge=3600)](https://www.npmjs.com/package/logger-neue) [![License](https://img.shields.io/npm/l/logger-neue.svg?style=flat-square&maxAge=3600)](https://www.npmjs.com/package/logger-neue) [![Travis CI](https://img.shields.io/travis/citycide/logger-neue.svg?style=flat-square&maxAge=3600)](https://travis-ci.org/citycide/logger-neue) [![TypeScript](https://img.shields.io/badge/written%20in-TypeScript-294E80.svg?style=flat-square)](http://www.typescriptlang.org/docs/handbook/typescript-in-5-minutes.html)
 
-_logger-neue_ is an attempt to refine the concept of logging in Node.
-It aims to be easier to configure than similar projects like
-[`winston`](https://github.com/winstonjs/winston) for simple
-features like custom log levels and file output.
+_logger-neue_ is an attempt to refine the concept of logging in Node. It aims
+to be easier to configure than similar projects like [`winston`](https://github.com/winstonjs/winston)
+for simple features like custom log levels and file output.
 
-It also has basic support for Node-ish environments like Electron's
-renderer, where it will write to the developer tools console.
+It also has basic support for Node-ish environments like Electron's renderer,
+where it will write to the developer tools console.
+
+Since v2, _logger-neue_ is written in strict TypeScript and includes type definitions. :tada:
 
 ## installation
 
-```console
-npm install logger-neue
-```
+1. install
+
+   Using [Yarn][yarn]:
+
+   ```console
+   yarn add logger-neue
+   ```
+
+   Or using npm:
+
+   ```console
+   npm install logger-neue
+   ```
+
+2. import
+
+   In TypeScript / ES2015+:
+
+   ```ts
+   import loggerNeue from 'logger-neue'
+   ```
+
+   In ES5 / commonjs:
+
+   ```js
+   const loggerNeue = require('logger-neue').default
+   ```
 
 ## usage
 
 ```js
-import LoggerNeue from 'logger-neue'
+import logger from 'logger-neue'
 
-// could also be `new LoggerNeue()`
-const log = LoggerNeue.create({
+const log = loggerNeue({
   file: {
     // if relative, resolved using `process.cwd()`
     path: './test.log',
@@ -46,63 +70,65 @@ const log = LoggerNeue.create({
     warn:   [1, 'yellow'],
     info:   [2, 'magenta'],
     debug:  [3, 'cyan'],
-    // undefined or invalid `colors` defaults to 'white'
+    // undefined or invalid `style` defaults to 'white'
     trace:  [4],
     absurd: [5, 'gray'],
 
     // levels can also be defined with object syntax:
     ridiculous: {
       level: 6,
-      colors: ['blue', 'bgYellow', 'underline', 'italic']
+      style: ['blue', 'bgYellow', 'underline', 'italic']
     }
   }
 })
 ```
 
-There's no need to pass a write stream for the file or deal
-with a complicated transports configuration. You just have to
-define `options.file` and provide a `path` - _logger-neue_ does
-the rest.
+There's no need to pass a write stream for the file or deal with a complicated
+transports configuration. You just have to define `options.file` and provide a
+`path` - _logger-neue_ does the rest.
 
-And the console transport is even easier. Minimum configuration
-for a prettier alternative to the standard `console.log` would be:
+And the console transport is even easier. Minimum configuration for a prettier
+alternative to the standard `console.log` would be:
 
 ```js
-const log = LoggerNeue.create()
+const log = loggerNeue()
 ```
 
 Or even prettier, with full color:
 
 ```js
-const log = LoggerNeue.create({
+const log = loggerNeue({
   console: { fullColor: true }
 })
 ```
 
 ## api
 
-### create <sup>_static_</sup>
+### create
 
 ```js
 create(options)
 ```
 
-Alternative to using the `new` keyword. Constructs & returns a new instance.
-The following are equivalent:
+There are actually two ways to create a new instance &mdash; the following are roughly equivalent:
 
 ```js
-const log = new LoggerNeue()
-const log = LoggerNeue.create()
+import loggerNeue, { LoggerNeue } from 'logger-neue'
+const logger1 = new LoggerNeue()
+const logger2 = loggerNeue()
 ```
+
+The difference is that `LoggerNeue` is the raw class, and the default export is a wrapper
+function that provides helpful type information based on your provided level definitions.
 
 > **Arguments**
 
-  - _optional_ `{Object} options`:
+  - _optional_ `{object} options`:
 
   | property  | type       | default     | description                       |
   | --------- | :--------: | :---------: | --------------------------------- |
-  | `file`    | `Object`   | `{}`        | Configuration for file output.    |
-  | `console` | `Object`   | _see below_ | Configuration for console output. |
+  | `file`    | `object` or `false` | `false`        | Configuration for file output.    |
+  | `console` | `object`   | _see below_ | Configuration for console output. |
 
   `options.file`:
 
@@ -118,7 +144,7 @@ const log = LoggerNeue.create()
   | property    | type            | default         | description                         |
   | ----------- | :-------------: | :-------------: | ----------------------------------- |
   | `fullColor` | `boolean`       | `false` | Whether to apply color to all types of values. |
-  | `level`     | `string` or `number` | `0` or `error`  | Number or name of the output level. |
+  | `level`     | `string` or `number` | `2` or `info`  | Number or name of the output level. |
   | `template`  | `string`        | `'{level}: {input}'` | [`strat`][strat] compatible template with which to format the output. See [templates](#templates) for more. |
 
   `options.levels`:
@@ -128,10 +154,10 @@ const log = LoggerNeue.create()
   |  property  | type       | default     | description                       |
   | ---------- | :--------: | :---------: | --------------------------------- |
   | `level`    | `number`   | `0`         | Determines when this log method fires. |
-  | `colors`   | `string` or `string[]` | - | [`chalk`][styles] styles for terminal output, either a single string or array of styles. |
+  | `style`   | `string` or `string[]` | - | [`chalk`][styles] styles for terminal output, either a single string or array of styles. |
   | `isError`  | `boolean`  | `false`     | If `true`, target `stderr` instead of `stdout`. |
 
-  If provided as an Array, it should take the form of `[level, colors, isError]`
+  If provided as an array, it should take the form of `[level, style, isError]`
 
 ### addLevel
 
@@ -149,10 +175,10 @@ addLevel(name, properties)
   |  property  | type       | default     | description                       |
   | ---------- | :--------: | :---------: | --------------------------------- |
   | `level`    | `number`   | `0`         | Determines when this log method fires. |
-  | `colors`   | `string` or `string[]` | - | [`chalk`][styles] styles for terminal output, either a single string or array of styles. |
+  | `style`   | `string` or `string[]` | - | [`chalk`][styles] styles for terminal output, either a single string or array of styles. |
   | `isError`  | `boolean`  | `false`     | If `true`, target `stderr` instead of `stdout`. |
 
-  If provided as an Array, it should take the form of `[level, colors, isError]`
+  If provided as an array, it should take the form of `[level, style, isError]`
 
 ### log
 
@@ -229,8 +255,7 @@ getConsoleLevel()
 setConsoleLevel(level)
 ```
 
-Set the logging level for console output. Any levels below this are
-not output.
+Set the logging level for console output. Any levels below this are not output.
 
 > **Arguments**
 
@@ -279,7 +304,7 @@ options = {
     template: '{level}: {input}'
   },
   levels: {
-    //       [level, colors, isError]
+    //       [level, style, isError]
     error:   [0, ['red', 'bgBlack'], true],
     warn:    [1, ['black', 'bgYellow'], false],
     info:    [2, ['green'], false],
@@ -290,8 +315,8 @@ options = {
 }
 ```
 
-If `options.file.path` is provided, these defaults are used for
-the rest of the properties in `options.file`:
+If `options.file.path` is provided, these defaults are used for the rest of
+the properties in `options.file`:
 
 ```js
 options.file = {
@@ -309,25 +334,25 @@ options.file = {
 This means a console-only config can be as simple as:
 
 ```js
-const logger = LoggerNeue.create()
+const logger = loggerNeue()
 ```
 
 ... and adding additional output to a file can be as simple as:
 
 ```js
-const logger = LoggerNeue.create({
+const logger = loggerNeue({
   file: { path: './log.txt' }
 })
 ```
 
 ## templates
 
-The [`strat`][strat] module is used to format all output strings. The
-templates are customizable by passing them to the `console` or `file`
-options objects at construction time.
+The [`strat`][strat] module is used to format all output strings. The templates
+are customizable by passing them to the `console` or `file` options objects at
+construction time.
 
-You can also use the `format()` method of any log level to pass a
-template to be interpolated.
+You can also use the `format()` method of any log level to pass a template to
+be interpolated.
 
 The variables replaced from a template are:
 
@@ -338,9 +363,9 @@ The variables replaced from a template are:
 | `level` | Name of the log level, stylized by default with `chalk` for terminals. |
 | `timestamp` | Defaults to an ISO string timestamp of log time. |
 
-In addition, there are various transformers available to modify the
-above variables just by appending them to the variable name after a `!`,
-like this substring taken from the default `file` template:
+In addition, there are various transformers available to modify the above
+variables just by appending them to the variable name after a `!`, like
+this substring taken from the default `file` template:
 
 ```js
 '{level!json}'
@@ -359,8 +384,8 @@ All the transformers available are:
 | `curly` | Wraps the argument in curly braces (`{}`) |
 | `json`  | JSON stringifies the argument             |
 
-See the [`strat`][strat] documentation for more info and usage
-examples for these transformers.
+See the [`strat`][strat] documentation for more info and usage examples for
+these transformers.
 
 ## events
 
@@ -369,7 +394,7 @@ methods of Node's [`EventEmitter`](https://nodejs.org/api/events.html#events_cla
 on it:
 
 ```js
-const log = LoggerNeue.create()
+const log = loggerNeue()
 log.on('log', event => {
   const { name, level, args } = event
 })
@@ -390,20 +415,20 @@ Pull requests and any [issues](https://github.com/citycide/logger-neue/issues)
 found are always welcome.
 
 1. Fork the project, and preferably create a branch named something like `feat-make-better`
-2. Modify the [LightScript][lsc] source in the `src` directory as needed
+2. Modify the source files in the `src` directory as needed
 3. Run `npm test` to make sure all tests continue to pass, and it never hurts to have more tests
 4. Push & pull request! :tada:
 
 ## see also
 
-- [LightScript][lsc] - the compile-to-JS language this project is written in, leveraging [Babel](https://babeljs.io)
-- [strat][strat] - string formatting library at home in ES2015+ JavaScript
-- [chalk](https://github.com/chalk/chalk) - terminal string styling done right
+- [strat][strat] &ndash; string formatting library at home in ES2015+ JavaScript
+- [chalk][chalk] &ndash; terminal string styling done right
 
 ## license
 
 MIT © [Bo Lingen / citycide](https://github.com/citycide)
 
-[lsc]: http://www.lightscript.org
+[yarn]: https://yarnpkg.com
+[chalk]: https://github.com/chalk/chalk
 [strat]: https://github.com/citycide/strat
 [styles]: https://github.com/chalk/chalk#styles

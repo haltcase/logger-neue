@@ -1,5 +1,5 @@
 import test from 'ava'
-import Neue from '../dist'
+import logger from '../dist'
 import { stderr } from './helpers/intercept'
 
 import { resolve } from 'path'
@@ -7,7 +7,7 @@ import { existsSync, readFile, remove } from 'fs-extra'
 
 const path = resolve(process.cwd(), 'temp.log')
 
-const log = Neue.create({
+const log = logger({
   file: { path }
 })
 

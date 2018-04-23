@@ -1,9 +1,9 @@
 import test from 'ava'
-import Neue from '../dist'
+import logger from '../dist'
 import { stderr } from './helpers/intercept'
 
 test('adds a new level to the instance', t => {
-  const log = Neue.create()
+  const log = logger()
 
   log.addLevel('foobar', {
     level: 42,
@@ -18,7 +18,7 @@ test('adds a new level to the instance', t => {
 })
 
 test('also allows more concise array syntax', t => {
-  const log = Neue.create()
+  const log = logger()
 
   log.addLevel('barbaz', [99, ['red', 'bgYellow']])
 
@@ -32,7 +32,7 @@ test('also allows more concise array syntax', t => {
 test('supports adding new error levels', t => {
   t.plan(5)
 
-  const log = Neue.create({ console: { level: 7 } })
+  const log = logger({ console: { level: 7 } })
 
   log.addLevel('err1', [6, ['red', 'bgYellow'], true])
   log.addLevel('err2', {

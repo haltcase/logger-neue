@@ -13,17 +13,17 @@ function interceptor (string, fn) {
 }
 
 exports.stdout = function (fn) {
-	process.stdout.write = string => interceptor(string, fn)
+  process.stdout.write = string => interceptor(string, fn)
 
-	return function restore () {
-		process.stdout.write = stdoutWriteOriginal
-	}
+  return function restore () {
+    process.stdout.write = stdoutWriteOriginal
+  }
 }
 
 exports.stderr = function (fn) {
-	process.stderr.write = string => interceptor(string, fn)
+  process.stderr.write = string => interceptor(string, fn)
 
-	return function restore () {
-		process.stderr.write = stderrWriteOriginal
-	}
+  return function restore () {
+    process.stderr.write = stderrWriteOriginal
+  }
 }

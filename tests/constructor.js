@@ -1,5 +1,5 @@
 import test from 'ava'
-import LoggerNeue from '../dist'
+import logger, { LoggerNeue } from '../dist'
 
 test('creates a new instance', t => {
   const log = new LoggerNeue()
@@ -7,24 +7,18 @@ test('creates a new instance', t => {
   t.is(typeof log.log, 'function')
 })
 
-test('`create()` method constructs a new instance', t => {
-  const log = LoggerNeue.create()
-  t.true(log != null)
-  t.is(typeof log.log, 'function')
-})
-
 test('constructor throws if `options` is not an object', t => {
   t.notThrows(() => new LoggerNeue())
-  t.notThrows(() => LoggerNeue.create())
   t.notThrows(() => new LoggerNeue({}))
-  t.notThrows(() => LoggerNeue.create({}))
-
   t.throws(() => new LoggerNeue('failure'))
-  t.throws(() => LoggerNeue.create('failure'))
+
+  t.notThrows(() => logger())
+  t.notThrows(() => logger({}))
+  t.throws(() => logger('failure'))
 })
 
 test('`options.levels` overrides default levels', t => {
-  const log = LoggerNeue.create({
+  const log = logger({
     levels: {
       lone: [0, 'cyan']
     }
@@ -34,7 +28,7 @@ test('`options.levels` overrides default levels', t => {
 })
 
 test('`options.levels` allows both array & object definitions', t => {
-  const log = LoggerNeue.create({
+  const log = logger({
     levels: {
       first: [0, 'cyan'],
       second: {

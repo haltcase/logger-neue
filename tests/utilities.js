@@ -1,7 +1,7 @@
 import test from 'ava'
-import Neue from '../dist'
+import logger from '../dist'
 
-const log = Neue.create()
+const log = logger()
 
 test('`getLevelByNumber()`', t => {
   t.is(log.getLevelByNumber(0), 'error')
@@ -35,9 +35,9 @@ test('`getConsoleLevel()` & `setConsoleLevel()`', t => {
 })
 
 test('`getFileLevel()` & `setFileLevel()`', t => {
-  t.is(typeof log.getFileLevel(), 'undefined')
+  t.is(log.getFileLevel(), -1)
 
-  const temp = Neue.create({
+  const temp = logger({
     file: {
       path: 'temp.txt'
     }
