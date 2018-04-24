@@ -42,7 +42,7 @@ Since v2, _logger-neue_ is written in strict TypeScript and includes type defini
 ## usage
 
 ```js
-import logger from 'logger-neue'
+import loggerNeue from 'logger-neue'
 
 const log = loggerNeue({
   file: {
