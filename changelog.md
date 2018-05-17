@@ -1,3 +1,10 @@
+<a name="2.0.1"></a>
+### `2.0.1` (2018-05-17)
+
+This release fixes an issue that published out of date files to npm.
+
+---
+
 <a name="2.0.0"></a>
 ### `2.0.0` (2018-04-23)
 
