@@ -35,7 +35,8 @@
     "build": "tsc -d",
     "watch": "npm run build -- -w",
     "pretest": "npm run build",
-    "test": "ava"
+    "test": "ava",
+    "prepublishOnly": "npm run test"
   },
   "dependencies": {
     "chalk": "^2.4.0",
