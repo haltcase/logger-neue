@@ -1,3 +1,13 @@
+<a name="v2.1.0"></a>
+### [`v2.1.0`](https://github.com/citycide/logger-neue/compare/v2.0.1...v2.1.0) (2019-01-02)
+
+
+###### FEATURES
+
+* add `pre` events and support preventing logs ([`d57130d`](https://github.com/citycide/logger-neue/commit/d57130d2f523514c4f030eda0309cc558eaef0d5))
+
+---
+
 <a name="2.0.1"></a>
 ### `2.0.1` (2018-05-17)
 
