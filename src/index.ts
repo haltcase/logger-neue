@@ -74,6 +74,15 @@ export class LoggerNeue extends EventEmitter {
       number = level
     }
 
+    let cancel = false
+    const prevent = () => (cancel = true)
+
+    const props = { name: action, level: number, args, prevent }
+    this.emit('pre:log', props)
+    this.emit(`pre:log:${action}`, props)
+
+    if (cancel) return
+
     if (this.console.level >= number) {
       consoleTransport(this as TransportContext, action, formatter, args)
       logged = true

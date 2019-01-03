@@ -47,3 +47,17 @@ test('`getFileLevel()` & `setFileLevel()`', t => {
   temp.setFileLevel(3)
   t.is(temp.getFileLevel(), 3)
 })
+
+test('`pre` events support preventing logs', t => {
+  log.on('log', () => {
+    t.fail('Log was not prevented as expected.')
+  })
+
+  log.on('pre:log', ({ prevent }) => {
+    prevent()
+  })
+
+  log.info('this should never be seen')
+
+  t.pass()
+})
