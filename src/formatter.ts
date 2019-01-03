@@ -57,8 +57,8 @@ const formatInput = (value: any, fullColor: boolean): string => {
 
   switch (typeof value) {
     case 'undefined': return chalk.gray('undefined')
-    case 'boolean': return chalk.blue(value)
-    case 'number': return chalk.yellow(value)
+    case 'boolean': return chalk.blue(value.toString())
+    case 'number': return chalk.yellow(value.toString())
     case 'string': return chalk.green(value)
     default: return inspect(value, { colors: true })
   }
