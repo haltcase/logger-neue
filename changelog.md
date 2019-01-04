@@ -1,3 +1,13 @@
+<a name="v2.2.0"></a>
+### [`v2.2.0`](https://github.com/citycide/logger-neue/compare/v2.1.0...v2.2.0) (2019-01-04)
+
+
+###### FEATURES
+
+* add `padding` template variable, use as default ([`e7b1bed`](https://github.com/citycide/logger-neue/commit/e7b1bedc6d3d3dc6f82da3d21a3982d0f632bf3b))
+
+---
+
 <a name="v2.1.0"></a>
 ### [`v2.1.0`](https://github.com/citycide/logger-neue/compare/v2.0.1...v2.1.0) (2019-01-02)
 
