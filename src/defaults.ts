@@ -1,6 +1,17 @@
 import * as helpers from './helpers'
 import * as t from './types'
 
+export const templatePresets = Object.freeze({
+  alignLeft: '{level}{padding}  {input}',
+  alignRight: '{padding}{level}  {input}',
+  separatedColon: '{level}: {input}',
+  bracketedLevel: '[{level}]{padding}  {input}',
+  jsonTimestamp:
+    '{{"level":{level!json},' +
+    '"input":{args!json},' +
+    '"timestamp":{timestamp!json}}}'
+})
+
 export type DefaultLevelMap = {
   readonly [key: string]: {
     readonly level: number,
@@ -53,7 +64,7 @@ export const CONSOLE: DefaultConsoleOptions = Object.freeze({
   fullColor: false,
   level: 2,
   levels: LEVELS,
-  template: '{level}: {input}'
+  template: templatePresets.alignLeft
 })
 
 export type DefaultFileOptions = {
@@ -67,10 +78,7 @@ export const FILE: DefaultFileOptions = Object.freeze({
   dir: process.cwd(),
   level: 0,
   levels: LEVELS,
-  template:
-    '{{"level":{level!json},' +
-    '"input":{args!json},' +
-    '"timestamp":{timestamp!json}}}'
+  template: templatePresets.jsonTimestamp
 })
 
 export type DefaultOptions = {

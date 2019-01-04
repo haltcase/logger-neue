@@ -2,6 +2,7 @@ import { EOL } from 'os'
 
 import { TransportContext } from '..'
 import { Formatter } from '../formatter'
+import { isBrowser } from '../helpers'
 
 // give the `console` object an index signature
 declare global {
@@ -10,29 +11,28 @@ declare global {
   }
 }
 
-export default function (ctx: TransportContext, level: string, formatter: Formatter, args: any[]) {
+export default (ctx: TransportContext, level: string, formatter: Formatter, args: any[]) => {
   const { style, isError } = ctx.levels[level]
 
+  if (isBrowser) {
+    // basic browser support for Electron
+    if (isError) {
+      console.error(`${level}:`, ...args)
+    } else {
+      const target = console[level] || console.log
+      target(`${level}:`, ...args)
+    }
+  }
+
+  const padding = formatter.getLevelPadding(ctx.getLevelNames(), level)
   const chalker = formatter.getChalkTemplate(style)
-  const config = { level, chalker, fullColor: ctx.console.fullColor }
+  const config = { level, padding, chalker, fullColor: ctx.console.fullColor }
   const context = formatter.createContext(config, args)
   const output = formatter.format(ctx.console.template, context)
 
   if (isError) {
-    if (typeof window !== 'undefined') {
-      // basic browser support for Electron
-      const target = console.error || (() => {})
-      target(`${level}: `, ...args)
-    } else {
-      process.stderr.write(output + EOL)
-    }
+    process.stderr.write(output + EOL)
   } else {
-    if (typeof window !== 'undefined') {
-      // basic browser support for Electron
-      const target = console[level] || console.log
-      target(`${level}: `, ...args)
-    } else {
-      process.stdout.write(output + EOL)
-    }
+    process.stdout.write(output + EOL)
   }
 }

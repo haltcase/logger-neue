@@ -93,6 +93,7 @@ export type NormalizedLevelMap = {
 
 export type InputContext = {
   args: any[],
+  padding: string,
   level: () => string,
   timestamp: () => string,
   input: () => string
@@ -101,7 +102,8 @@ export type InputContext = {
 export type InputState = {
   chalker: (level: string) => string,
   fullColor?: boolean,
-  level: string
+  level: string,
+  padding?: string
 }
 
 export type Context = Required<InputContext>

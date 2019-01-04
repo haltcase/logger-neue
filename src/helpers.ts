@@ -4,6 +4,18 @@ import { DeepMutable, Defined, LooseObject } from './types'
 
 const ignorableErrors = ['ENOENT', 'ENOTDIR']
 
+export const isBrowser: boolean = new Function(`
+  return (function () {
+    return (
+      typeof window !== "undefined" &&
+      this === window
+    )
+  }).call(undefined)
+`)()
+
+export const repeat = (val: string, times: number) =>
+  new Array(times).fill(val).join('')
+
 export const mergeOptions = <T extends LooseObject, U extends LooseObject> (
   object: T,
   defaults: U

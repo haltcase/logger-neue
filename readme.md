@@ -1,13 +1,15 @@
 # logger-neue &middot; [![Version](https://img.shields.io/npm/v/logger-neue.svg?style=flat-square&maxAge=3600)](https://www.npmjs.com/package/logger-neue) [![License](https://img.shields.io/npm/l/logger-neue.svg?style=flat-square&maxAge=3600)](https://www.npmjs.com/package/logger-neue) [![Travis CI](https://img.shields.io/travis/citycide/logger-neue.svg?style=flat-square&maxAge=3600)](https://travis-ci.org/citycide/logger-neue) [![TypeScript](https://img.shields.io/badge/written%20in-TypeScript-294E80.svg?style=flat-square)](http://www.typescriptlang.org/docs/handbook/typescript-in-5-minutes.html)
 
 _logger-neue_ is an attempt to refine the concept of logging in Node. It aims
-to be easier to configure than similar projects like [`winston`](https://github.com/winstonjs/winston)
+to be easier to configure than similar projects like [`winston`]()
 for simple features like custom log levels and file output.
 
 It also has basic support for Node-ish environments like Electron's renderer,
 where it will write to the developer tools console.
 
 Since v2, _logger-neue_ is written in strict TypeScript and includes type definitions. :tada:
+
+[installation](#installation) &middot; [usage](#usage) &middot; [api](#api) &middot; [defaults](#defaults) &middot; [templates](#templates) &middot; [events](#events) &middot; [contributing](#contributing) &middot; [license](#license)
 
 ## installation
 
@@ -41,6 +43,26 @@ Since v2, _logger-neue_ is written in strict TypeScript and includes type defini
 
 ## usage
 
+While _logger-neue_ is highly configurable, minimum configuration for a
+prettier alternative to the standard `console.log` is as simple as:
+
+```js
+const log = loggerNeue()
+```
+
+Or even prettier, with full color:
+
+```js
+const log = loggerNeue({
+  console: { fullColor: true }
+})
+```
+
+Below is an example of a more thorough configuration. Note that there's no
+need to pass a write stream for the file or deal with a complicated transports
+configuration. You just have to define `options.file` and provide a `path`
+&mdash; _logger-neue_ does the rest.
+
 ```js
 import loggerNeue from 'logger-neue'
 
@@ -55,7 +77,7 @@ const log = loggerNeue({
   },
   console: {
     // pass either a string or number
-    // resolved against the log level map
+    // resolved against the log level map below
     level: process.env.NODE_ENV === 'development' ? 'trace' : 'error',
     // if set to true, uses the `colors` option of `util.inspect`
     // for all logged arguments, regardless of type
@@ -80,25 +102,6 @@ const log = loggerNeue({
       style: ['blue', 'bgYellow', 'underline', 'italic']
     }
   }
-})
-```
-
-There's no need to pass a write stream for the file or deal with a complicated
-transports configuration. You just have to define `options.file` and provide a
-`path` - _logger-neue_ does the rest.
-
-And the console transport is even easier. Minimum configuration for a prettier
-alternative to the standard `console.log` would be:
-
-```js
-const log = loggerNeue()
-```
-
-Or even prettier, with full color:
-
-```js
-const log = loggerNeue({
-  console: { fullColor: true }
 })
 ```
 
@@ -148,7 +151,7 @@ level definitions.
   | ----------- | :-------------: | :-------------: | ----------------------------------- |
   | `fullColor` | `boolean`       | `false` | Whether to apply color to all types of values. |
   | `level`     | `string` or `number` | `2` or `info`  | Number or name of the output level. |
-  | `template`  | `string`        | `'{level}: {input}'` | [`strat`][strat] compatible template with which to format the output. See [templates](#templates) for more. |
+  | `template`  | `string`        | `'{level}{padding}{input}'` | [`strat`][strat] compatible template with which to format the output. See [templates](#templates) for more. |
 
   `options.levels`:
 
@@ -304,7 +307,7 @@ options = {
     level: 'info',
     // does not apply color to primitives
     fullColor: false,
-    template: '{level}: {input}'
+    template: '{level}{padding}  {input}'
   },
   levels: {
     //       [level, style, isError]
@@ -357,16 +360,52 @@ construction time.
 You can also use the `format()` method of any log level to pass a template to
 be interpolated.
 
+### variables
+
 The variables replaced from a template are:
 
 | name    | description |
 | ------- | ----------- |
 | `args`  | Array of the raw arguments passed to the log function. |
+| `padding` | String of spaces for use in aligning log levels of varying lengths. |
 | `input` | Array of the arguments after they've been processed & stylized. |
 | `level` | Name of the log level, stylized by default with `chalk` for terminals. |
 | `timestamp` | Defaults to an ISO string timestamp of log time. |
 
-In addition, there are various transformers available to modify the above
+### presets
+
+Several template presets are exported for your usage:
+
+```js
+import loggerNeue, { templatePresets } from 'logger-neue'
+
+const log = loggerNeue({
+  console: {
+    fullColor: true,
+    template: templatePresets.bracketedLevel
+  }
+})
+
+log.info('hello there!')
+// -> [info]        hello there!
+
+log.ridiculous('hello again!')
+// -> [ridiculous]  hello again!
+```
+
+| name             | template                                  |
+| ---------------- | ----------------------------------------- |
+| `alignLeft`*     | `{level}{padding}  {input}`               |
+| `alignRight`     | `{padding}{level}  {input}`               |
+| `separatedColon` | `{level}: {input}`                        |
+| `bracketedLevel` | `[{level}]{padding}  {input}`             |
+| `jsonTimestamp`  | `{{"level":{level!json},"input":{args!json},"timestamp":{timestamp!json}}}` |
+
+_* default template_
+
+### transformers
+
+Templates also support transformers &mdash; functions that modify the above
 variables just by appending them to the variable name after a `!`, like
 this substring taken from the default `file` template:
 
@@ -387,14 +426,13 @@ All the transformers available are:
 | `curly` | Wraps the argument in curly braces (`{}`) |
 | `json`  | JSON stringifies the argument             |
 
-See the [`strat`][strat] documentation for more info and usage examples for
-these transformers.
+See the [`strat`][strat] documentation for more details about how these
+transformers work.
 
 ## events
 
 Each instance of _logger-neue_ is also an event emitter, so you can use all
-methods of Node's [`EventEmitter`](https://nodejs.org/api/events.html#events_class_eventemitter)
-on it:
+methods of Node's [`EventEmitter`][node_events] on it:
 
 ```js
 const log = loggerNeue()
@@ -412,15 +450,32 @@ log.removeAllListeners()
 // etc
 ```
 
+There are also events emitted prior to the log being output &mdash; just
+prepend `pre:` to the events in the above example. These events provide
+the same fields but with the addition of a `prevent()` function. Calling
+this function prevents the log from being output.
+
+```js
+log.on('pre:log', event => {
+  const { name, level, args, prevent } = event
+})
+
+log.on('pre:log:trace', event => {
+  // prevent all output when `log.trace()` is called
+  event.prevent()
+})
+```
+
 ## contributing
 
-Pull requests and any [issues](https://github.com/citycide/logger-neue/issues)
-found are always welcome.
+This project is open to contributions of all kinds! Please check and search
+the [issues][issues] if you encounter a problem before opening a new one.
+[Pull requests][prinfo] for improvements are also welcome.
 
 1. Fork the project, and preferably create a branch named something like `feat-make-better`
 2. Modify the source files in the `src` directory as needed
 3. Run `npm test` to make sure all tests continue to pass, and it never hurts to have more tests
-4. Push & pull request! :tada:
+4. Commit, push, and open a pull request.
 
 ## see also
 
@@ -431,8 +486,13 @@ found are always welcome.
 
 MIT © [Bo Lingen / citycide](https://github.com/citycide)
 
+[winston]: https://github.com/winstonjs/winston
 [yarn]: https://yarnpkg.com
 [chalk]: https://github.com/chalk/chalk
 [strat]: https://github.com/citycide/strat
+[node_events]: https://nodejs.org/api/events.html#events_class_eventemitter
 [styles]: https://github.com/chalk/chalk#styles
 [impl]: https://github.com/citycide/logger-neue/blob/fd4b2ba33303aedb46745b520f3873ae5be4a809/src/index.ts#L143-L145
+
+[issues]: https://github.com/citycide/logger-neue/issues
+[prinfo]: https://help.github.com/articles/creating-a-pull-request/

@@ -153,4 +153,5 @@ export default <T extends t.Options> (options?: T) => {
   return new LoggerNeue(options) as LoggerNeue & { [K in keyof T['levels']]: LogFunction }
 }
 
+export const { templatePresets } = defaults
 export * from './types'
