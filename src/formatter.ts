@@ -50,7 +50,7 @@ export const getColorizer = (styles: t.Style[]): Style => {
 
 export const getLevelPadding = (allLevels: string[], thisLevel: string): string => {
   const len = Math.max(...(allLevels.map(n => n.length)))
-  return helpers.repeat(' ', len - thisLevel.length)
+  return ' '.repeat(len - thisLevel.length)
 }
 
 export const createContext = (state: t.InputState, args: any[]): t.Context => {
