@@ -3,7 +3,7 @@ import colorette, { Style } from 'colorette'
 import stringify from 'fast-safe-stringify'
 import strat, { Format } from 'strat'
 
-import * as helpers from './helpers'
+import { isObject } from './helpers'
 
 import * as t from './types'
 
@@ -69,7 +69,7 @@ export const createContext = (state: t.InputState, args: any[]): t.Context => {
 }
 
 const formatInput = (value: any, fullColor: boolean): string => {
-  if (helpers.isObject(value) || Array.isArray(value)) {
+  if (isObject(value) || Array.isArray(value)) {
     return inspect(value, { colors: fullColor })
   }
 
