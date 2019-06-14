@@ -1,5 +1,5 @@
 import test from 'ava'
-import logger, { LoggerNeue } from '../src'
+import logger, { LoggerNeue, Style } from '../src'
 
 test('creates a new instance', t => {
   const log = new LoggerNeue()
@@ -16,6 +16,17 @@ test('constructor throws if `options` is not an object', t => {
   // these are compile-time errors in TypeScript without the casts
   t.throws(() => new LoggerNeue('failure' as any))
   t.throws(() => logger('failure' as any))
+})
+
+test('`options.levels.style` throws on invalid styles', t => {
+  t.throws(() =>
+    logger({
+      levels: {
+        // this is a compile-time error in TypeScript without the cast
+        YELL: [0, 'loud' as Style]
+      }
+    })
+  )
 })
 
 test('`options.levels` overrides default levels', t => {
