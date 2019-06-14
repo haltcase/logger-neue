@@ -39,12 +39,13 @@
   },
   "dependencies": {
     "colorette": "^1.0.8",
-    "fast-safe-stringify": "^2.0.4",
+    "fast-safe-stringify": "^2.0.6",
     "strat": "^1.2.0"
   },
   "devDependencies": {
-    "@types/node": "^9.6.6",
-    "ava": "^1.0.1",
+    "@types/node": "^8.10.49",
+    "ava": "^2.1.0",
     "ts-node": "^8.2.0",
+    "typescript": "^3.5.1"
   }
 }
