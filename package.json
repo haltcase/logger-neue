@@ -16,7 +16,7 @@
   "bugs": "https://github.com/citycide/logger-neue/issues",
   "main": "dist/index.js",
   "engines": {
-    "node": ">=6"
+    "node": ">=8.10"
   },
   "keywords": [
     "logging",
