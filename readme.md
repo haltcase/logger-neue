@@ -1,7 +1,7 @@
 # logger-neue &middot; [![Version](https://img.shields.io/npm/v/logger-neue.svg?style=flat-square&maxAge=3600)](https://www.npmjs.com/package/logger-neue) [![License](https://img.shields.io/npm/l/logger-neue.svg?style=flat-square&maxAge=3600)](https://www.npmjs.com/package/logger-neue) [![Travis CI](https://img.shields.io/travis/citycide/logger-neue.svg?style=flat-square&maxAge=3600)](https://travis-ci.org/citycide/logger-neue) [![TypeScript](https://img.shields.io/badge/written%20in-TypeScript-294E80.svg?style=flat-square)](http://www.typescriptlang.org/docs/handbook/typescript-in-5-minutes.html)
 
 _logger-neue_ is an attempt to refine the concept of logging in Node. It aims
-to be easier to configure than similar projects like [`winston`]()
+to be easier to configure than similar projects like [`winston`][winston]
 for simple features like custom log levels and file output.
 
 It also has basic support for Node-ish environments like Electron's renderer,
@@ -88,7 +88,7 @@ const log = loggerNeue({
     // this example uses array syntax
     error:  [0, ['red', 'bold', 'underline']],
     // arr[0] = the log level
-    // arr[1] = an Array ( or single string ) of chalk modifiers
+    // arr[1] = an Array ( or single string ) of colorette modifiers
     warn:   [1, 'yellow'],
     info:   [2, 'magenta'],
     debug:  [3, 'cyan'],
@@ -160,7 +160,7 @@ level definitions.
   |  property  | type       | default     | description                       |
   | ---------- | :--------: | :---------: | --------------------------------- |
   | `level`    | `number`   | `0`         | Determines when this log method fires. |
-  | `style`   | `string` or `string[]` | - | [`chalk`][styles] styles for terminal output, either a single string or array of styles. |
+  | `style`   | `string` or `string[]` | - | [`colorette`][styles] styles for terminal output, either a single string or array of styles. |
   | `isError`  | `boolean`  | `false`     | If `true`, target `stderr` instead of `stdout`. |
 
   If provided as an array, it should take the form of `[level, style, isError]`
@@ -181,7 +181,7 @@ addLevel(name, properties)
   |  property  | type       | default     | description                       |
   | ---------- | :--------: | :---------: | --------------------------------- |
   | `level`    | `number`   | `0`         | Determines when this log method fires. |
-  | `style`   | `string` or `string[]` | - | [`chalk`][styles] styles for terminal output, either a single string or array of styles. |
+  | `style`   | `string` or `string[]` | - | [`colorette`][styles] styles for terminal output, either a single string or array of styles. |
   | `isError`  | `boolean`  | `false`     | If `true`, target `stderr` instead of `stdout`. |
 
   If provided as an array, it should take the form of `[level, style, isError]`
@@ -369,7 +369,7 @@ The variables replaced from a template are:
 | `args`  | Array of the raw arguments passed to the log function. |
 | `padding` | String of spaces for use in aligning log levels of varying lengths. |
 | `input` | Array of the arguments after they've been processed & stylized. |
-| `level` | Name of the log level, stylized by default with `chalk` for terminals. |
+| `level` | Name of the log level, stylized by default with `colorette` for terminals. |
 | `timestamp` | Defaults to an ISO string timestamp of log time. |
 
 ### presets
@@ -395,13 +395,14 @@ log.ridiculous('hello again!')
 
 | name             | template                                  |
 | ---------------- | ----------------------------------------- |
-| `alignLeft`*     | `{level}{padding}  {input}`               |
+| `alignLeft`¹     | `{level}{padding}  {input}`               |
 | `alignRight`     | `{padding}{level}  {input}`               |
 | `separatedColon` | `{level}: {input}`                        |
 | `bracketedLevel` | `[{level}]{padding}  {input}`             |
-| `jsonTimestamp`  | `{{"level":{level!json},"input":{args!json},"timestamp":{timestamp!json}}}` |
+| `jsonTimestamp`² | `{{"level":{level!json},"input":{args!json},"timestamp":{timestamp!json}}}` |
 
-_* default template_
+_¹ default console template_<br/>
+_² default file template_
 
 ### transformers
 
@@ -480,7 +481,7 @@ the [issues][issues] if you encounter a problem before opening a new one.
 ## see also
 
 - [strat][strat] &ndash; string formatting library at home in ES2015+ JavaScript
-- [chalk][chalk] &ndash; terminal string styling done right
+- [colorette][colorette] &ndash; terminal string styling done right
 
 ## license
 
@@ -488,10 +489,10 @@ MIT © [Bo Lingen / citycide](https://github.com/citycide)
 
 [winston]: https://github.com/winstonjs/winston
 [yarn]: https://yarnpkg.com
-[chalk]: https://github.com/chalk/chalk
+[colorette]: https://github.com/jorgebucaran/colorette
 [strat]: https://github.com/citycide/strat
 [node_events]: https://nodejs.org/api/events.html#events_class_eventemitter
-[styles]: https://github.com/chalk/chalk#styles
+[styles]: https://github.com/jorgebucaran/colorette#styles
 [impl]: https://github.com/citycide/logger-neue/blob/fd4b2ba33303aedb46745b520f3873ae5be4a809/src/index.ts#L143-L145
 
 [issues]: https://github.com/citycide/logger-neue/issues
