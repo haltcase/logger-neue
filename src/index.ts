@@ -34,6 +34,7 @@ export class LoggerNeue extends EventEmitter {
     if (name in this) return this
 
     this.levels[name] = defaults.normalizeDefinition(properties)
+    formatter.validateStyles(this.levels[name].style)
 
     this[name] = (...args: any[]) =>
       this.log(name, ...args)

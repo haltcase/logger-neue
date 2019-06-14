@@ -19,6 +19,14 @@ export const styles: Set<t.Style> =
     key => typeof (colorette as any)[key] === 'function'
   ) as t.Style[])
 
+export const validateStyles = (styleSet: string[]) => {
+  for (const style of styleSet) {
+    if (!styles.has(style as t.Style)) {
+      throw new RangeError(`${style} is not a valid log message style`)
+    }
+  }
+}
+
 export const format = strat.create({
   upper: (str: string) => String(str).toUpperCase(),
   lower: (str: string) => String(str).toLowerCase(),
