@@ -41,11 +41,9 @@
   "dependencies": {
     "colorette": "^1.0.8",
     "fast-safe-stringify": "^2.0.4",
-    "fs-extra": "^5.0.0",
     "strat": "^1.2.0"
   },
   "devDependencies": {
-    "@types/fs-extra": "^5.0.2",
     "@types/node": "^9.6.6",
     "ava": "^1.0.1",
     "typescript": "^3.2.2"
