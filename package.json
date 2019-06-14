@@ -2,16 +2,9 @@
   "name": "logger-neue",
   "version": "2.2.0",
   "description": "Doing for Node logging what Neue did for Helvetica.",
-  "author": {
-    "name": "Bo Lingen",
-    "email": "lingenbw@gmail.com",
-    "url": "https://github.com/citycide"
-  },
+  "author": "Bo Lingen <lingenbw@gmail.com> (https://github.com/citycide)",
   "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/citycide/logger-neue.git"
-  },
+  "repository": "https://github.com/citycide/logger-neue",
   "homepage": "https://github.com/citycide/logger-neue",
   "bugs": "https://github.com/citycide/logger-neue/issues",
   "main": "dist/index.js",
