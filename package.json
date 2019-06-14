@@ -1,6 +1,6 @@
 {
   "name": "logger-neue",
-  "version": "2.2.0",
+  "version": "3.0.0",
   "description": "Doing for Node logging what Neue did for Helvetica.",
   "author": "Bo Lingen <lingenbw@gmail.com> (https://github.com/citycide)",
   "license": "MIT",

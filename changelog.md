@@ -1,3 +1,31 @@
+<a name="v3.0.0"></a>
+### [`v3.0.0`](https://github.com/citycide/logger-neue/compare/v2.2.0...v3.0.0) (2019-06-13)
+
+With this release, logger-neue will now be an even lighter package. Its two
+largest dependencies ([chalk](https://github.com/chalk/chalk) & [fs-extra](https://github.com/jprichardson/node-fs-extra))
+have been replaced and removed, respectively. Install size will decrease from
+around 371kB to about 107kB.
+
+###### BREAKING CHANGES
+
+* invalid style names in level descriptors will now cause errors to be thrown.
+* chalk has many features not used in logger-neue and has been removed in favor of
+the much smaller [colorette](https://github.com/jorgebucaran/colorette). breakage is
+possible but should be minimal.
+* support for node < 8 has been dropped.
+
+###### FEATURES
+
+* throw on invalid style names ([`3b8072c`](https://github.com/citycide/logger-neue/commit/3b8072c84a08bc1ee13743dcc14d3d5219cc6cc0))
+* replace chalk with colorette ([`c14c280`](https://github.com/citycide/logger-neue/commit/c14c280231b01ec79734dfc612c03cfdc341d82c))
+* require node >= 8 ([`9e030b9`](https://github.com/citycide/logger-neue/commit/9e030b97c94867e9e3a94ecb17515c1e10fe804d))
+
+###### PERFORMANCE
+
+* drop `fs-extra` dependency ([`bcc2866`](https://github.com/citycide/logger-neue/commit/bcc2866ab533dca3bc75ac16b3094666bee7e491))
+
+---
+
 <a name="v2.2.0"></a>
 ### [`v2.2.0`](https://github.com/citycide/logger-neue/compare/v2.1.0...v2.2.0) (2019-01-04)
 
