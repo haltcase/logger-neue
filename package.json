@@ -34,9 +34,8 @@
   "scripts": {
     "build": "tsc -d",
     "watch": "npm run build -- -w",
-    "pretest": "npm run build",
     "test": "ava",
-    "prepublishOnly": "npm run test"
+    "prepublishOnly": "npm run build && npm run test"
   },
   "dependencies": {
     "colorette": "^1.0.8",
@@ -46,6 +45,6 @@
   "devDependencies": {
     "@types/node": "^9.6.6",
     "ava": "^1.0.1",
-    "typescript": "^3.2.2"
+    "ts-node": "^8.2.0",
   }
 }

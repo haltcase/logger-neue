@@ -1,5 +1,15 @@
 export default {
+  compileEnhancements: false,
+  extensions: [
+    "ts"
+  ],
   files: [
-    'tests/**/*.js'
+    'tests/**/*.ts'
+  ],
+  helpers: [
+    'tests/helpers/**/*.ts'
+  ],
+  require: [
+    'ts-node/register'
   ]
 }

@@ -1,5 +1,5 @@
 import test from 'ava'
-import logger from '../dist'
+import logger from '../src'
 
 const log = logger()
 

@@ -1,5 +1,5 @@
 import test from 'ava'
-import logger from '../dist'
+import logger from '../src'
 import { stderr } from './helpers/intercept'
 
 test('adds a new level to the instance', t => {
@@ -7,7 +7,7 @@ test('adds a new level to the instance', t => {
 
   log.addLevel('foobar', {
     level: 42,
-    colors: ['bold', 'blue']
+    style: ['bold', 'blue']
   })
 
   t.is(typeof log.foobar, 'function')
@@ -37,7 +37,7 @@ test('supports adding new error levels', t => {
   log.addLevel('err1', [6, ['red', 'bgYellow'], true])
   log.addLevel('err2', {
     level: 7,
-    colors: ['red', 'bgYellow'],
+    style: ['red', 'bgYellow'],
     isError: true
   })
 

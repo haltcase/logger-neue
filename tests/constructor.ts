@@ -1,5 +1,5 @@
 import test from 'ava'
-import logger, { LoggerNeue } from '../dist'
+import logger, { LoggerNeue } from '../src'
 
 test('creates a new instance', t => {
   const log = new LoggerNeue()
@@ -10,11 +10,12 @@ test('creates a new instance', t => {
 test('constructor throws if `options` is not an object', t => {
   t.notThrows(() => new LoggerNeue())
   t.notThrows(() => new LoggerNeue({}))
-  t.throws(() => new LoggerNeue('failure'))
-
   t.notThrows(() => logger())
   t.notThrows(() => logger({}))
-  t.throws(() => logger('failure'))
+
+  // these are compile-time errors in TypeScript without the casts
+  t.throws(() => new LoggerNeue('failure' as any))
+  t.throws(() => logger('failure' as any))
 })
 
 test('`options.levels` overrides default levels', t => {
