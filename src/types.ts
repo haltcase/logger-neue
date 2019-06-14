@@ -1,4 +1,4 @@
-import { Chalk, ChalkOptions } from 'chalk'
+import colorette, { Style as StyleFn } from 'colorette'
 
 export type LooseObject = {
   [key: string]: any
@@ -12,15 +12,13 @@ export type VoidKeys <T> = {
   [K in keyof T]: T[K] extends null | undefined ? K : never
 }[keyof T]
 
+type PickOfType <T, U> = {
+  [K in keyof T]: T[K] extends U ? K : never
+}[keyof T]
+
 export type Defined <T> = Pick<T, Exclude<keyof T, VoidKeys<T>>>
 
-export type Style = Exclude<{
-  [K in keyof Chalk]: Chalk[K] extends Function
-    ? Chalk[K] extends Chalk
-      ? K
-      : never
-    : K
-}[keyof Chalk], keyof ChalkOptions>
+export type Style = PickOfType<typeof colorette, StyleFn>
 
 export type ConsoleOptions = Partial<{
   fullColor: boolean,
@@ -100,7 +98,7 @@ export type InputContext = {
 }
 
 export type InputState = {
-  chalker: (level: string) => string,
+  colorizer: (level: string) => string,
   fullColor?: boolean,
   level: string,
   padding?: string

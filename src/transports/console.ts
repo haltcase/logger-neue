@@ -25,8 +25,8 @@ export default (ctx: TransportContext, level: string, formatter: Formatter, args
   }
 
   const padding = formatter.getLevelPadding(ctx.getLevelNames(), level)
-  const chalker = formatter.getChalkTemplate(style)
-  const config = { level, padding, chalker, fullColor: ctx.console.fullColor }
+  const colorizer = formatter.getColorizer(style)
+  const config = { level, padding, colorizer, fullColor: ctx.console.fullColor }
   const context = formatter.createContext(config, args)
   const output = formatter.format(ctx.console.template, context)
 

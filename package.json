@@ -39,7 +39,7 @@
     "prepublishOnly": "npm run test"
   },
   "dependencies": {
-    "chalk": "^2.4.0",
+    "colorette": "^1.0.8",
     "fast-safe-stringify": "^2.0.4",
     "fs-extra": "^5.0.0",
     "strat": "^1.2.0"

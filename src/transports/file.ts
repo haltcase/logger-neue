@@ -15,7 +15,7 @@ export default (ctx: TransportContext, level: string, formatter: Formatter, args
   }
 
   fs.ensureDir(dirname(logPath)).then(() => {
-    const config = { level, chalker: (val: string) => val }
+    const config = { level, colorizer: (val: string) => val }
     const context = formatter.createContext(config, args)
     const output = formatter.format(ctx.file.template, context)
 
