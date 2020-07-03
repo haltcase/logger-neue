@@ -150,9 +150,11 @@ export interface LogFunction {
   format (template: string, ...args: any[]): void
 }
 
-export default <T extends t.Options> (options?: T) => {
+export const createLogger = <T extends t.Options> (options?: T) => {
   return new LoggerNeue(options) as LoggerNeue & { [K in keyof T['levels']]: LogFunction }
 }
+
+export default createLogger
 
 export const { templatePresets } = defaults
 export * from './types'

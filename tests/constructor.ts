@@ -1,5 +1,5 @@
 import test from 'ava'
-import logger, { LoggerNeue, Style } from '../src'
+import { createLogger, LoggerNeue, Style } from '../src'
 
 test('creates a new instance', t => {
   const log = new LoggerNeue()
@@ -10,19 +10,19 @@ test('creates a new instance', t => {
 test('constructor throws if `options` is not an object', t => {
   t.notThrows(() => new LoggerNeue())
   t.notThrows(() => new LoggerNeue({}))
-  t.notThrows(() => logger())
-  t.notThrows(() => logger({}))
+  t.notThrows(() => createLogger())
+  t.notThrows(() => createLogger({}))
 
   // @ts-expect-error
   t.throws(() => new LoggerNeue('failure'))
 
   // @ts-expect-error
-  t.throws(() => logger('failure'))
+  t.throws(() => createLogger('failure'))
 })
 
 test('`options.levels.style` throws on invalid styles', t => {
   t.throws(() =>
-    logger({
+    createLogger({
       levels: {
         // @ts-expect-error
         YELL: [0, 'loud']
@@ -32,7 +32,7 @@ test('`options.levels.style` throws on invalid styles', t => {
 })
 
 test('`options.levels` overrides default levels', t => {
-  const log = logger({
+  const log = createLogger({
     levels: {
       lone: [0, 'cyan']
     }
@@ -42,7 +42,7 @@ test('`options.levels` overrides default levels', t => {
 })
 
 test('`options.levels` allows both array & object definitions', t => {
-  const log = logger({
+  const log = createLogger({
     levels: {
       first: [0, 'cyan'],
       second: {
