@@ -1,4 +1,4 @@
-import colorette, { Style as StyleFn } from 'colorette'
+import * as colorette from 'colorette'
 
 export type LooseObject = {
   [key: string]: any
@@ -18,7 +18,7 @@ type PickOfType <T, U> = {
 
 export type Defined <T> = Pick<T, Exclude<keyof T, VoidKeys<T>>>
 
-export type Style = PickOfType<typeof colorette, StyleFn>
+export type Style = PickOfType<typeof colorette, colorette.Style>
 
 export type ConsoleOptions = Partial<{
   fullColor: boolean,
