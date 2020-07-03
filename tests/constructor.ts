@@ -13,17 +13,19 @@ test('constructor throws if `options` is not an object', t => {
   t.notThrows(() => logger())
   t.notThrows(() => logger({}))
 
-  // these are compile-time errors in TypeScript without the casts
-  t.throws(() => new LoggerNeue('failure' as any))
-  t.throws(() => logger('failure' as any))
+  // @ts-expect-error
+  t.throws(() => new LoggerNeue('failure'))
+
+  // @ts-expect-error
+  t.throws(() => logger('failure'))
 })
 
 test('`options.levels.style` throws on invalid styles', t => {
   t.throws(() =>
     logger({
       levels: {
-        // this is a compile-time error in TypeScript without the cast
-        YELL: [0, 'loud' as Style]
+        // @ts-expect-error
+        YELL: [0, 'loud']
       }
     })
   )
