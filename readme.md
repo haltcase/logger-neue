@@ -145,7 +145,7 @@ level definitions.
   | `dir`      | `string`        | `process.cwd()` | Base directory with which to resolve `path`.  |
   | `level`    | `string` or `number` | `0` or `error`  | Number or name of the output level. |
   | `path`     | `string`        | -               | Path to the log file, resolved with `dir` if relative. |
-  | `template` | `string`        | `'{{"level":{level!json},"input":{args!json},"timestamp":{timestamp!json}}}'` | [`strat`][strat] compatible template with which to format the output. See [templates](#templates) for more. |
+  | `template` | `string`        | [_see here_](#default-templates) | [`strat`][strat] compatible template with which to format the output. See [templates](#templates) for more. |
 
   `options.console`:
 
@@ -153,7 +153,7 @@ level definitions.
   | ----------- | :-------------: | :-------------: | ----------------------------------- |
   | `fullColor` | `boolean`       | `false` | Whether to apply color to all types of values. |
   | `level`     | `string` or `number` | `2` or `info`  | Number or name of the output level. |
-  | `template`  | `string`        | `"{level}{padding}{input}"` | [`strat`][strat] compatible template with which to format the output. See [templates](#templates) for more. |
+  | `template`  | `string`        | [_see here_](#default-templates) | [`strat`][strat] compatible template with which to format the output. See [templates](#templates) for more. |
 
   `options.levels`:
 
@@ -394,6 +394,8 @@ log.info("hello there!")
 log.ridiculous("hello again!")
 // -> [ridiculous]  hello again!
 ```
+
+<a name="default-templates"></a>
 
 | name             | template                                  |
 | ---------------- | ----------------------------------------- |
