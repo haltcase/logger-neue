@@ -1,3 +1,13 @@
+<a name="3.1.1"></a>
+### [`3.1.1`](https://github.com/citycide/logger-neue/compare/v3.1.0...3.1.1) (2020-07-06)
+
+
+###### BUG FIXES
+
+* use namespace import for cjs dependency ([`fe07c12`](https://github.com/citycide/logger-neue/commit/fe07c12676cce06f0e380c231e64478a9d59b54c))
+
+---
+
 <a name="v3.1.0"></a>
 ### [`v3.1.0`](https://github.com/citycide/logger-neue/compare/v3.0.0...v3.1.0) (2020-07-05)
 
