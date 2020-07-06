@@ -1,3 +1,14 @@
+<a name="v3.1.0"></a>
+### [`v3.1.0`](https://github.com/citycide/logger-neue/compare/v3.0.0...v3.1.0) (2020-07-05)
+
+
+###### FEATURES
+
+* add esm entry point ([`ddd5b37`](https://github.com/citycide/logger-neue/commit/ddd5b373fc0567ec35f0aaab81f51d4735c1b3e4))
+* add named export for default factory function ([`a84f1e7`](https://github.com/citycide/logger-neue/commit/a84f1e7dca1c6f2b176dc5d9e02c74539f36107a))
+
+---
+
 <a name="v3.0.0"></a>
 ### [`v3.0.0`](https://github.com/citycide/logger-neue/compare/v2.2.0...v3.0.0) (2019-06-13)
 
