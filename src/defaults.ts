@@ -1,15 +1,15 @@
-import * as helpers from './helpers'
-import * as t from './types'
+import * as helpers from "./helpers"
+import * as t from "./types"
 
 export const templatePresets = Object.freeze({
-  alignLeft: '{level}{padding}  {input}',
-  alignRight: '{padding}{level}  {input}',
-  separatedColon: '{level}: {input}',
-  bracketedLevel: '[{level}]{padding}  {input}',
+  alignLeft: "{level}{padding}  {input}",
+  alignRight: "{padding}{level}  {input}",
+  separatedColon: "{level}: {input}",
+  bracketedLevel: "[{level}]{padding}  {input}",
   jsonTimestamp:
-    '{{"level":{level!json},' +
-    '"input":{args!json},' +
-    '"timestamp":{timestamp!json}}}'
+    `{{"level":{level!json},` +
+    `"input":{args!json},` +
+    `"timestamp":{timestamp!json}}}`
 })
 
 export type DefaultLevelMap = {
@@ -23,32 +23,32 @@ export type DefaultLevelMap = {
 export const LEVELS: DefaultLevelMap = Object.freeze({
   error: {
     level: 0,
-    style: ['red', 'bgBlack'] as t.Style[],
+    style: ["red", "bgBlack"] as t.Style[],
     isError: true
   },
   warn: {
     level: 1,
-    style: ['black', 'bgYellow'] as t.Style[],
+    style: ["black", "bgYellow"] as t.Style[],
     isError: false
   },
   info: {
     level: 2,
-    style: ['green'] as t.Style[],
+    style: ["green"] as t.Style[],
     isError: false
   },
   verbose: {
     level: 3,
-    style: ['blue', 'bgBlack'] as t.Style[],
+    style: ["blue", "bgBlack"] as t.Style[],
     isError: false
   },
   debug: {
     level: 4,
-    style: ['cyan'] as t.Style[],
+    style: ["cyan"] as t.Style[],
     isError: false
   },
   silly: {
     level: 5,
-    style: ['inverse'] as t.Style[],
+    style: ["inverse"] as t.Style[],
     isError: false
   }
 })
@@ -102,7 +102,7 @@ export const normalizeConsoleOptions = (
     result.levels = normalizeLevels(options.levels)
   }
 
-  if (typeof options.level === 'string') {
+  if (typeof options.level === "string") {
     result.level = levels[options.level].level || 0
   }
 
@@ -135,7 +135,7 @@ export const normalizeFileOptions: {
     result.levels = normalizeLevels(options.levels)
   }
 
-  if (typeof options.level === 'string') {
+  if (typeof options.level === "string") {
     result.level = levels[options.level].level || 0
   }
 
@@ -148,9 +148,9 @@ export const normalizeDefinition = (definition: t.LevelDescriptor): t.Normalized
   let isError: boolean | undefined
 
   if (Array.isArray(definition)) {
-    ;[level, style = 'white', isError = false] = definition as t.LevelDescriptorTuple3
+    ;[level, style = "white", isError = false] = definition as t.LevelDescriptorTuple3
   } else if (helpers.isObject(definition)) {
-    ;({ level, style = 'white', isError = false } = definition)
+    ;({ level, style = "white", isError = false } = definition)
   } else {
     throw new TypeError(`invalid level definition`)
   }
@@ -168,7 +168,7 @@ export const normalizeLevels = (levels?: t.LevelMap | null): t.NormalizedLevelMa
   }
 
   if (!helpers.isObject(levels)) {
-    throw new TypeError(`expected 'options.levels' to be an Object`)
+    throw new TypeError(`expected "options.levels" to be an Object`)
   }
 
   const obj = {} as t.NormalizedLevelMap

@@ -1,11 +1,11 @@
-import { mkdir, statSync } from 'fs'
-import { dirname } from 'path'
-import { promisify } from 'util'
+import { mkdir, statSync } from "fs"
+import { dirname } from "path"
+import { promisify } from "util"
 
-import { DeepMutable, Defined, LooseObject } from './types'
+import { DeepMutable, Defined, LooseObject } from "./types"
 
-const mkdirMode = parseInt('0777', 8)
-const ignorableErrors = ['ENOENT', 'ENOTDIR']
+const mkdirMode = parseInt("0777", 8)
+const ignorableErrors = ["ENOENT", "ENOTDIR"]
 
 const mkdirAsync = promisify(mkdir)
 
@@ -60,11 +60,11 @@ export const ensureDir = async (path: string): Promise<boolean> => {
     await mkdirAsync(path, mkdirMode)
     return true
   } catch (err) {
-    if (err.code === 'EEXIST') {
+    if (err.code === "EEXIST") {
       return isDirectorySync(path)
     }
 
-    if (err.code === 'ENOENT') {
+    if (err.code === "ENOENT") {
       const target = dirname(path)
       return (
         target !== path &&

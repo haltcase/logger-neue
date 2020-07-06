@@ -1,13 +1,13 @@
 const stdoutWriteOriginal = process.stdout.write
 const stderrWriteOriginal = process.stderr.write
 
-function interceptor (string: string, fn: (str: string) => any) {
+const interceptor = (string: string, fn: (str: string) => any) => {
   const result = fn(string)
-  if (typeof result === 'string') {
-    string = result.replace(/\n$/, '')
+  if (typeof result === "string") {
+    string = result.replace(/\n$/, "")
   }
 
-  return !!string
+  return Boolean(string)
 }
 
 export const stdout = (fn: (str: string) => any) => {

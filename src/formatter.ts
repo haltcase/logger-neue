@@ -1,11 +1,11 @@
-import { inspect } from 'util'
-import colorette, { Style } from 'colorette'
-import stringify from 'fast-safe-stringify'
-import strat, { Format } from 'strat'
+import { inspect } from "util"
+import colorette, { Style } from "colorette"
+import stringify from "fast-safe-stringify"
+import strat, { Format } from "strat"
 
-import { isObject } from './helpers'
+import { isObject } from "./helpers"
 
-import * as t from './types'
+import * as t from "./types"
 
 export type Formatter = {
   createContext: typeof createContext,
@@ -16,7 +16,7 @@ export type Formatter = {
 
 export const styles: Set<t.Style> =
   new Set(Object.keys(colorette).filter(
-    key => typeof (colorette as any)[key] === 'function'
+    key => typeof (colorette as any)[key] === "function"
   ) as t.Style[])
 
 export const validateStyles = (styleSet: string[]) => {
@@ -50,11 +50,11 @@ export const getColorizer = (styles: t.Style[]): Style => {
 
 export const getLevelPadding = (allLevels: string[], thisLevel: string): string => {
   const len = Math.max(...(allLevels.map(n => n.length)))
-  return ' '.repeat(len - thisLevel.length)
+  return " ".repeat(len - thisLevel.length)
 }
 
 export const createContext = (state: t.InputState, args: any[]): t.Context => {
-  const { colorizer, level, padding = '', fullColor } = state
+  const { colorizer, level, padding = "", fullColor } = state
 
   return {
     args,
@@ -63,8 +63,8 @@ export const createContext = (state: t.InputState, args: any[]): t.Context => {
     timestamp: () => new Date().toISOString(),
     input: (): string =>
       args.reduce((acc, cur, i) => {
-        return acc + (i ? ' ' : '') + formatInput(cur, Boolean(fullColor))
-      }, '')
+        return acc + (i ? " " : "") + formatInput(cur, Boolean(fullColor))
+      }, "")
   }
 }
 
@@ -75,13 +75,13 @@ const formatInput = (value: any, fullColor: boolean): string => {
 
   if (!fullColor) return value
 
-  if (value === null) return colorette.magenta('null')
+  if (value === null) return colorette.magenta("null")
 
   switch (typeof value) {
-    case 'undefined': return colorette.gray('undefined')
-    case 'boolean': return colorette.blue(String(value))
-    case 'number': return colorette.yellow(String(value))
-    case 'string': return colorette.green(value)
+    case "undefined": return colorette.gray("undefined")
+    case "boolean": return colorette.blue(String(value))
+    case "number": return colorette.yellow(String(value))
+    case "string": return colorette.green(value)
     default: return inspect(value, { colors: true })
   }
 }

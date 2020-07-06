@@ -32,13 +32,13 @@ Since v2, _logger-neue_ is written in strict TypeScript and includes type defini
    In TypeScript / ES2015+:
 
    ```ts
-   import loggerNeue from 'logger-neue'
+   import loggerNeue from "logger-neue"
    ```
 
    In ES5 / commonjs:
 
    ```js
-   const loggerNeue = require('logger-neue').default
+   const loggerNeue = require("logger-neue").default
    ```
 
 ## usage
@@ -64,21 +64,21 @@ configuration. You just have to define `options.file` and provide a `path`
 &mdash; _logger-neue_ does the rest.
 
 ```js
-import loggerNeue from 'logger-neue'
+import loggerNeue from "logger-neue"
 
 const log = loggerNeue({
   file: {
     // if relative, resolved using `process.cwd()`
-    path: './test.log',
+    path: "./test.log",
     // to specify the base directory, also pass the `dir` property
     dir: __dirname,
-    // level defaults to 'error'
-    level: 'error'
+    // level defaults to "error"
+    level: "error"
   },
   console: {
     // pass either a string or number
     // resolved against the log level map below
-    level: process.env.NODE_ENV === 'development' ? 'trace' : 'error',
+    level: process.env.NODE_ENV === "development" ? "trace" : "error",
     // if set to true, uses the `colors` option of `util.inspect`
     // for all logged arguments, regardless of type
     fullColor: true
@@ -86,20 +86,20 @@ const log = loggerNeue({
   levels: {
     // the level map to be used for both file & console
     // this example uses array syntax
-    error:  [0, ['red', 'bold', 'underline']],
-    // arr[0] = the log level
-    // arr[1] = an Array ( or single string ) of colorette modifiers
-    warn:   [1, 'yellow'],
-    info:   [2, 'magenta'],
-    debug:  [3, 'cyan'],
-    // undefined or invalid `style` defaults to 'white'
+    error:  [0, ["red", "bold", "underline"]],
+    // array[0] = the log level
+    // array[1] = an array ( or single string ) of colorette modifiers
+    warn:   [1, "yellow"],
+    info:   [2, "magenta"],
+    debug:  [3, "cyan"],
+    // undefined or invalid `style` defaults to "white"
     trace:  [4],
-    absurd: [5, 'gray'],
+    absurd: [5, "gray"],
 
     // levels can also be defined with object syntax:
     ridiculous: {
       level: 6,
-      style: ['blue', 'bgYellow', 'underline', 'italic']
+      style: ["blue", "bgYellow", "underline", "italic"]
     }
   }
 })
@@ -118,7 +118,7 @@ export (which is a function) or the named export `LoggerNeue`. This means the fo
 are (roughly) equivalent:
 
 ```js
-import loggerNeue, { LoggerNeue } from 'logger-neue'
+import loggerNeue, { LoggerNeue } from "logger-neue"
 const logger1 = new LoggerNeue()
 const logger2 = loggerNeue()
 ```
@@ -151,7 +151,7 @@ level definitions.
   | ----------- | :-------------: | :-------------: | ----------------------------------- |
   | `fullColor` | `boolean`       | `false` | Whether to apply color to all types of values. |
   | `level`     | `string` or `number` | `2` or `info`  | Number or name of the output level. |
-  | `template`  | `string`        | `'{level}{padding}{input}'` | [`strat`][strat] compatible template with which to format the output. See [templates](#templates) for more. |
+  | `template`  | `string`        | `"{level}{padding}{input}"` | [`strat`][strat] compatible template with which to format the output. See [templates](#templates) for more. |
 
   `options.levels`:
 
@@ -195,11 +195,11 @@ log(level, ...args)
 Alternative method of calling a log level. The following are equivalent:
 
 ```js
-log.error('fail')
-log('error', 'fail')
+log.error("fail")
+log("error", "fail")
 
 // can also call by level number
-log(0, 'fail')
+log(0, "fail")
 ```
 
 > **Arguments**
@@ -303,20 +303,20 @@ options = {
   // no file output
   file: false,
   console: {
-    // will output 'info', 'warn', and 'error'
-    level: 'info',
+    // will output "info", "warn", and "error"
+    level: "info",
     // does not apply color to primitives
     fullColor: false,
-    template: '{level}{padding}  {input}'
+    template: "{level}{padding}  {input}"
   },
   levels: {
     //       [level, style, isError]
-    error:   [0, ['red', 'bgBlack'], true],
-    warn:    [1, ['black', 'bgYellow'], false],
-    info:    [2, ['green'], false],
-    verbose: [3, ['blue', 'bgBlack'], false],
-    debug:   [4, ['cyan'], false],
-    silly:   [5, ['inverse'], false]
+    error:   [0, ["red", "bgBlack"], true],
+    warn:    [1, ["black", "bgYellow"], false],
+    info:    [2, ["green"], false],
+    verbose: [3, ["blue", "bgBlack"], false],
+    debug:   [4, ["cyan"], false],
+    silly:   [5, ["inverse"], false]
   }
 }
 ```
@@ -328,12 +328,12 @@ the properties in `options.file`:
 options.file = {
   // used as base directory if `path` is relative
   dir: process.cwd(),
-  // only outputs 'error'
+  // only outputs "error"
   level: 0,
   template:
-    '{{"level":{level!json},' +
-    '"input":{args!json},' +
-    '"timestamp":{timestamp!json}}}'
+    `{{"level":{level!json},` +
+    `"input":{args!json},` +
+    `"timestamp":{timestamp!json}}}`
 }
 ```
 
@@ -347,7 +347,7 @@ const logger = loggerNeue()
 
 ```js
 const logger = loggerNeue({
-  file: { path: './log.txt' }
+  file: { path: "./log.txt" }
 })
 ```
 
@@ -377,7 +377,7 @@ The variables replaced from a template are:
 Several template presets are exported for your usage:
 
 ```js
-import loggerNeue, { templatePresets } from 'logger-neue'
+import loggerNeue, { templatePresets } from "logger-neue"
 
 const log = loggerNeue({
   console: {
@@ -386,10 +386,10 @@ const log = loggerNeue({
   }
 })
 
-log.info('hello there!')
+log.info("hello there!")
 // -> [info]        hello there!
 
-log.ridiculous('hello again!')
+log.ridiculous("hello again!")
 // -> [ridiculous]  hello again!
 ```
 
@@ -411,7 +411,7 @@ variables just by appending them to the variable name after a `!`, like
 this substring taken from the default `file` template:
 
 ```js
-'{level!json}'
+"{level!json}"
 ```
 
 The `json` transformer stringifies its argument, `level` in this case.
@@ -437,11 +437,11 @@ methods of Node's [`EventEmitter`][node_events] on it:
 
 ```js
 const log = loggerNeue()
-log.on('log', event => {
+log.on("log", event => {
   const { name, level, args } = event
 })
 
-log.on('log:info', event => {
+log.on("log:info", event => {
   // only `log.info()` will trigger this
   const { name, level, args } = event
 })
@@ -457,11 +457,11 @@ the same fields but with the addition of a `prevent()` function. Calling
 this function prevents the log from being output.
 
 ```js
-log.on('pre:log', event => {
+log.on("pre:log", event => {
   const { name, level, args, prevent } = event
 })
 
-log.on('pre:log:trace', event => {
+log.on("pre:log:trace", event => {
   // prevent all output when `log.trace()` is called
   event.prevent()
 })

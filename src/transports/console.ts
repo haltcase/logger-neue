@@ -1,8 +1,8 @@
-import { EOL } from 'os'
+import { EOL } from "os"
 
-import { TransportContext } from '..'
-import { Formatter } from '../formatter'
-import { isBrowser } from '../helpers'
+import { TransportContext } from ".."
+import { Formatter } from "../formatter"
+import { isBrowser } from "../helpers"
 
 // give the `console` object an index signature
 declare global {

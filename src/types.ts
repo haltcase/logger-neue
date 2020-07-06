@@ -1,4 +1,4 @@
-import * as colorette from 'colorette'
+import * as colorette from "colorette"
 
 export type LooseObject = {
   [key: string]: any
