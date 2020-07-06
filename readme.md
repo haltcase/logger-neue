@@ -66,12 +66,14 @@ configuration. You just have to define `options.file` and provide a `path`
 ```js
 import loggerNeue from "logger-neue"
 
+import { dirname } from "path"
+
 const log = loggerNeue({
   file: {
     // if relative, resolved using `process.cwd()`
     path: "./test.log",
     // to specify the base directory, also pass the `dir` property
-    dir: __dirname,
+    dir: dirname(import.meta.url),
     // level defaults to "error"
     level: "error"
   },
