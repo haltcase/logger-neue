@@ -8,6 +8,11 @@
   "homepage": "https://github.com/citycide/logger-neue",
   "bugs": "https://github.com/citycide/logger-neue/issues",
   "main": "dist/index.js",
+  "module": "es/index.mjs",
+  "exports": {
+    "import": "./es/index.mjs",
+    "require": "./dist/index.js"
+  },
   "engines": {
     "node": ">=8.10"
   },
@@ -22,11 +27,11 @@
     "typescript"
   ],
   "files": [
-    "dist"
+    "dist",
+    "es"
   ],
   "scripts": {
-    "build": "tsc -d",
-    "watch": "npm run build -- -w",
+    "build": "tsukuru -R",
     "test": "ava",
     "prepublishOnly": "npm run build && npm run test"
   },
@@ -39,6 +44,7 @@
     "@types/node": "^8.10.61",
     "ava": "^3.9.0",
     "ts-node": "^8.10.2",
+    "tsukuru": "^0.4.3",
     "typescript": "^3.9.6"
   }
 }
