@@ -1,5 +1,5 @@
 import { inspect } from "util"
-import colorette, { Style } from "colorette"
+import * as colorette from "colorette"
 import stringify from "fast-safe-stringify"
 import strat, { Format } from "strat"
 
@@ -36,7 +36,7 @@ export const format = strat.create({
   json: (str: string) => stringify(str)
 })
 
-export const getColorizer = (styles: t.Style[]): Style => {
+export const getColorizer = (styles: t.Style[]): colorette.Style => {
   return message => {
     let result = message
 
