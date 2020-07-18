@@ -32,13 +32,13 @@ Since v2, _logger-neue_ is written in strict TypeScript and includes type defini
    In TypeScript / ES2015+:
 
    ```ts
-   import loggerNeue from "logger-neue"
+   import { createLogger } from "logger-neue"
    ```
 
    In ES5 / commonjs:
 
    ```js
-   const loggerNeue = require("logger-neue").default
+   const { createLogger } = require("logger-neue")
    ```
 
 ## usage
@@ -47,13 +47,13 @@ While _logger-neue_ is highly configurable, minimum configuration for a
 prettier alternative to the standard `console.log` is as simple as:
 
 ```js
-const log = loggerNeue()
+const log = createLogger()
 ```
 
 Or even prettier, with full color:
 
 ```js
-const log = loggerNeue({
+const log = createLogger({
   console: { fullColor: true }
 })
 ```
@@ -64,11 +64,11 @@ configuration. You just have to define `options.file` and provide a `path`
 &mdash; _logger-neue_ does the rest.
 
 ```js
-import loggerNeue from "logger-neue"
+import { createLogger } from "logger-neue"
 
 import { dirname } from "path"
 
-const log = loggerNeue({
+const log = createLogger({
   file: {
     // if relative, resolved using `process.cwd()`
     path: "./test.log",
@@ -109,23 +109,23 @@ const log = loggerNeue({
 
 ## api
 
-### loggerNeue (`constructor`)
+### createLogger
 
 ```js
-loggerNeue(options)
+createLogger(options)
 ```
 
-There are actually two ways to create a new instance &mdash; you can use the default
-export (which is a function) or the named export `LoggerNeue`. This means the following
-are (roughly) equivalent:
+There are actually two ways to create a new instance &mdash; you can use the
+`createLogger` factory function or the `LoggerNeue` class directly. This means
+the following are (roughly) equivalent:
 
 ```js
-import loggerNeue, { LoggerNeue } from "logger-neue"
+import { createLogger, LoggerNeue } from "logger-neue"
 const logger1 = new LoggerNeue()
-const logger2 = loggerNeue()
+const logger2 = createLogger()
 ```
 
-The difference is that `LoggerNeue` is the raw class, and the default export is a
+The difference is that `LoggerNeue` is the raw class, and `createLogger` is a
 wrapper function that [provides helpful type information][impl] based on your provided
 level definitions.
 
@@ -342,13 +342,13 @@ options.file = {
 This means a console-only config can be as simple as:
 
 ```js
-const logger = loggerNeue()
+const logger = createLogger()
 ```
 
 ... and adding additional output to a file can be as simple as:
 
 ```js
-const logger = loggerNeue({
+const logger = createLogger({
   file: { path: "./log.txt" }
 })
 ```
@@ -379,9 +379,9 @@ The variables replaced from a template are:
 Several template presets are exported for your usage:
 
 ```js
-import loggerNeue, { templatePresets } from "logger-neue"
+import { createLogger, templatePresets } from "logger-neue"
 
-const log = loggerNeue({
+const log = createLogger({
   console: {
     fullColor: true,
     template: templatePresets.bracketedLevel
@@ -440,7 +440,7 @@ Each instance of _logger-neue_ is also an event emitter, so you can use all
 methods of Node's [`EventEmitter`][node_events] on it:
 
 ```js
-const log = loggerNeue()
+const log = createLogger()
 log.on("log", event => {
   const { name, level, args } = event
 })
